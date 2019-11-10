@@ -53,6 +53,10 @@ public class Booking {
         return stringOut;
     }
     
+    public long getBookingId() {
+        return bookingId;
+    }
+
     public void sendConfirmation() {
         //TODO supposed to send some confirmation but given that we don't have anything to send the confirmation to we have left it empty
     }
