@@ -41,5 +41,23 @@ public class Quote {
             bike.setInStore(true);
         }
     }
+
+    public DateRange getDateRange() {
+        return dateRange;
+    }
+
+    public void setDateRange(DateRange dateRange) {
+        this.dateRange = dateRange;
+    }
+
+    public Collection<Bike> getBikes() {
+        return bikes;
+    }
+
+    public void setBikes(Collection<Bike> bikes) {
+        this.bikes = bikes;
+    }
+    
+    
     
 }

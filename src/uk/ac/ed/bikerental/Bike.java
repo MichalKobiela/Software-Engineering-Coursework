@@ -36,6 +36,12 @@ public class Bike {
             return false;
         }
     }
+    public Collection<DateRange> getDatesReserved() {
+        return datesReserved;
+    }
+    public void setDatesReserved(Collection<DateRange> datesReserved) {
+        this.datesReserved = datesReserved;
+    }
     public long getBikeId() {
         return bikeId;
     }

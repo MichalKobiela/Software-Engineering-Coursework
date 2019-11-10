@@ -1,5 +1,7 @@
 package uk.ac.ed.bikerental;
 
+import java.util.Collection;
+
 public class Booking {
     private long bookingId;
     private Quote quote;
@@ -32,6 +34,13 @@ public class Booking {
     
     public void makeCompleted() {
         //TODO for all Bike in Booking, clear dateRange, set in store to true, make completed true, deposit return to true
+        Collection<Bike> bikes = quote.getBikes();
+        for (Bike bike : bikes) {
+            bike.setDatesReserved(null);
+            bike.setInStore(true);      
+        }
+        depositReturned = true;
+        completed = true; 
     }
     
     public String toString() {
@@ -40,7 +49,6 @@ public class Booking {
         stringOut += "BookingId: " + bookingId + "\nCustomer Name: " + customer.getFirstName() + " " + customer.getLastName() + "\n";
         stringOut += "Order Summary: " + orderSummary + "\n";
         stringOut += "Completed: " + completed;       
-        
         
         return stringOut;
     }
