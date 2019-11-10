@@ -56,14 +56,15 @@ public class BikeProvider {
         for(BikeType bikeType : bikeMap.keySet()) {
             int quantity = bikeMap.get(bikeType);
             Collection<Bike> bikesOfCurrentType = findBikes(bikeType, quantity, dateRange);
-            if(!bikesOfCurrentType.isEmpty()) {
+            if(bikesOfCurrentType.size() == quantity) {
                 bikesToOffer.addAll(bikesOfCurrentType);
             }
             else {
                 return Optional.empty();
             }
         }
-        return Optional.empty();
+        Quote quote = new Quote(this, dateRange, totalPrice, deposit, bikesToOffer //TODO deposit and totalPrice
+        return Optional.of(quote);
     }
     
     private Collection<Bike> findBikes(BikeType bikeType, int quantity, DateRange dateRange) {
@@ -79,10 +80,7 @@ public class BikeProvider {
                }
            }
         }
-        if(result.size()==quantity) {
-            return result;
-        }
-        return Collections.EMPTY_LIST;
+        return result;
         
     }
 
