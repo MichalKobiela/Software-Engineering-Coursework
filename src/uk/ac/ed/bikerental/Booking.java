@@ -35,10 +35,12 @@ public class Booking {
     public void makeCompleted() {
         //TODO for all Bike in Booking, clear dateRange, set in store to true, make completed true, deposit return to true
         Collection<Bike> bikes = quote.getBikes();
+        
         for (Bike bike : bikes) {
             bike.setDatesReserved(null);
             bike.setInStore(true);      
         }
+        
         depositReturned = true;
         completed = true; 
     }
