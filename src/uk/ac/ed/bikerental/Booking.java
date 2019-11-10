@@ -37,6 +37,10 @@ public class Booking {
     public String toString() {
         String stringOut = "";
         
+        stringOut += "BookingId: " + bookingId + "\nCustomer Name: " + customer.getFirstName() + " " + customer.getLastName() + "\n";
+        stringOut += "Order Summary: " + orderSummary + "\n";
+        stringOut += "Completed: " + completed;       
+        
         
         return stringOut;
     }
