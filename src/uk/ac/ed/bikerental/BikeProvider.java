@@ -1,6 +1,7 @@
 
 package uk.ac.ed.bikerental;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,18 +14,19 @@ public class BikeProvider {
     private Location shopAddress;
     private String phoneNumber;
     private TimeRange openingHours;
-    private Map<BikeType, Double> dailyRentalPrice;
-    private double depositRate;
+    private Map<BikeType, BigDecimal> dailyRentalPrice;
+    private BigDecimal depositRate;
     private Map<BikeType, Collection<Bike>> bikes;
     private Collection<BikeProvider> partners;
     private Collection<Booking> bookings;
     
     
-    public BikeProvider(String name, String postCode, String address, String phoneNumber, TimeRange openingHours) {
+    public BikeProvider(String name, String postCode, String address, String phoneNumber, TimeRange openingHours, BigDecimal depositRate) {
         this.name = name;
         this.shopAddress= new Location(postCode, address);
         this.phoneNumber = phoneNumber;
         this.openingHours=openingHours;
+        this.depositRate = depositRate;
     }
     
     
@@ -63,10 +65,22 @@ public class BikeProvider {
                 return Optional.empty();
             }
         }
-        Quote quote = new Quote(this, dateRange, totalPrice, deposit, bikesToOffer //TODO deposit and totalPrice
+        BigDecimal totalPrice = calculatePrcie(bikesToOffer);
+        Quote quote = new Quote(this, dateRange, totalPrice, totalPrice.multiply(depositRate), bikesToOffer); //TODO deposit and totalPrice
         return Optional.of(quote);
     }
     
+    private BigDecimal calculatePrcie(Collection<Bike> bikes) {
+            BigDecimal price = new BigDecimal(0);
+            for(Bike bike : bikes) {
+                BigDecimal priceOfBike = dailyRentalPrice.get(bike.getType());
+                price.add(priceOfBike);
+            }
+            return price;
+    }
+
+
+
     private Collection<Bike> findBikes(BikeType bikeType, int quantity, DateRange dateRange) {
         Collection<Bike> result = new ArrayList<Bike>();
         Collection<Bike> listOfBikes = bikes.get(bikeType);
