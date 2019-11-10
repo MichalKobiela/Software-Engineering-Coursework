@@ -69,10 +69,6 @@ public class Customer {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     private void setPassword(String password) {
         this.password = password;
     }
