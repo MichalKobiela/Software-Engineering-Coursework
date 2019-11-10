@@ -16,7 +16,7 @@ import java.util.Map;
 public class MultidayDiscountsPolicy implements PricingPolicy {
 
     private Map<BikeType, BigDecimal> prices;
-    private Map<Integer, Double> discounts;
+    private Map<Integer, BigDecimal> discounts;
 
     @Override
     public void setDailyRentalPrice(BikeType bikeType, BigDecimal dailyPrice) {
@@ -28,12 +28,14 @@ public class MultidayDiscountsPolicy implements PricingPolicy {
     public BigDecimal calculatePrice(Collection<Bike> bikes, DateRange duration) {
         BigDecimal price= new BigDecimal(0);
         long numOfDays = duration.toDays();
-        double percentage= chooseDiscount(numOfDays);
+        BigDecimal percentage= chooseDiscount(numOfDays);
         for(Bike bike : bikes) {
             BigDecimal priceOfBike = prices.get(bike.getType());
             price.add(priceOfBike);
         }
-        return price.multiply(new BigDecimal(1-percentage));
+        BigDecimal multiplyFactor = new BigDecimal(1);
+        multiplyFactor.subtract(percentage); // multiply factor is 1 - percentage
+        return price.multiply(multiplyFactor);
     }
     
     
@@ -47,7 +49,7 @@ public class MultidayDiscountsPolicy implements PricingPolicy {
      * 
      */
     public void setDiscount(Integer minNumOfDays, double percentage) {
-        discounts.put(minNumOfDays, percentage);
+        discounts.put(minNumOfDays, new BigDecimal(percentage));
     }
     
     
@@ -57,11 +59,11 @@ public class MultidayDiscountsPolicy implements PricingPolicy {
      * @param  numOfDays length in days of hire
      * 
      */
-    public double chooseDiscount(long numOfDays) {
-        double result = 0;
+    public BigDecimal chooseDiscount(long numOfDays) {
+        BigDecimal result = new BigDecimal(0);
         for(Integer days: discounts.keySet()) {
             if(numOfDays>=days) {
-                if(discounts.get(days) > result) {
+                if(discounts.get(days).compareTo(result)==1) {
                     result = discounts.get(days);                    
                 }
             }
