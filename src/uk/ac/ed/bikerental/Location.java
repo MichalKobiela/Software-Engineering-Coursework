@@ -11,8 +11,7 @@ public class Location {
     }
     
     public boolean isNearTo(Location other) {
-        // TODO: Implement Location.isNearTo
-        assert false;
+        if(postcode.substring(0, 2).equals(other.postcode.substring(0, 2)));
         return true;
     }
 
