@@ -59,6 +59,18 @@ public class Quote {
         this.bikes = bikes;
     }
     
+    public BikeProvider getBikeProvider() {
+        return bikeProvider;
+    }
+    
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+    
+    public BigDecimal getDeposit() {
+        return deposit;
+    }
+    
     
     
 }

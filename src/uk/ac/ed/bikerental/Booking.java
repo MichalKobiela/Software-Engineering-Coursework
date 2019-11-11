@@ -1,6 +1,7 @@
 package uk.ac.ed.bikerental;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public class Booking {
     private long bookingId;
@@ -12,10 +13,11 @@ public class Booking {
     private boolean completed;
     private boolean depositPaid;
     private boolean depositReturned;
+    private DeliveryService deliveryService;
     
        
     public Booking(long bookingId, Quote quote, Customer customer, boolean storeCollection, String customerAddress,
-            String orderSummary, boolean completed, boolean depositPaid, boolean depositReturned) {
+            String orderSummary, boolean completed, boolean depositPaid, boolean depositReturned, DeliveryService deliveryService) {
         super();
         this.bookingId = bookingId;
         this.quote = quote;
@@ -26,6 +28,8 @@ public class Booking {
         this.completed = completed;
         this.depositPaid = depositPaid;
         this.depositReturned = depositReturned;
+        this.deliveryService = deliveryService;
+
     }
 
     public void registerDepositReturn() {
@@ -52,7 +56,7 @@ public class Booking {
         
         stringOut += "BookingId: " + bookingId + "\nCustomer Name: " + customer.getFirstName() + " " + customer.getLastName() + "\n";
         stringOut += "Order Summary: " + orderSummary + "\n";
-        stringOut += "Completed: " + completed;       
+        //stringOut += "Completed: " + completed;       
         
         return stringOut;
     }
@@ -63,5 +67,17 @@ public class Booking {
 
     public void sendConfirmation() {
         //TODO supposed to send some confirmation but given that we don't have anything to send the confirmation to we have left it empty
+    }
+    
+    public Quote getQuote() {
+        return quote;
+    }
+    
+    public DeliveryService getDeliveryService() {
+        return deliveryService;
+    }
+    
+    public void setDeliveryService(DeliveryService deliveryService) {
+        this.deliveryService = deliveryService;
     }
 }

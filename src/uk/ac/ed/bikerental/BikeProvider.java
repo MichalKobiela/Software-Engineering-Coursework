@@ -149,4 +149,10 @@ public class BikeProvider {
         return shopAddress;
     }
     
+    public String getName() {
+        return name;
+    }
+    
+    
+    
 }

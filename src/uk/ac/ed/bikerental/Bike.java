@@ -8,12 +8,14 @@ public class Bike implements Deliverable {
     private BikeType type;
     private Collection<DateRange> datesReserved;
     private boolean isInStore;
+    private boolean isBeingDelivered;
     
     public Bike(long bikeId, BikeType type) {
         this.bikeId = bikeId;
         this.type = type;
         this.isInStore = true;
         this.datesReserved = new ArrayList<DateRange>();
+        this.isBeingDelivered = false;
     }
     public BikeType getType() {
         //assert false;
