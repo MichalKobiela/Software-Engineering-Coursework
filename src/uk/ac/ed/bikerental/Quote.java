@@ -1,15 +1,16 @@
 package uk.ac.ed.bikerental;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 public class Quote {
     private BikeProvider bikeProvider;
     private DateRange dateRange;
-    private double totalPrice;
-    private double deposit;
+    private BigDecimal totalPrice;
+    private BigDecimal deposit;
     private Collection<Bike> bikes;
     
-    public Quote(BikeProvider bikeProvider, DateRange dateRange, double totalPrice, double deposit,
+    public Quote(BikeProvider bikeProvider, DateRange dateRange, BigDecimal totalPrice, BigDecimal deposit,
             Collection<Bike> bikes) {
         super();
         this.bikeProvider = bikeProvider;

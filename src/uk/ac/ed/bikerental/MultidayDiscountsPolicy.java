@@ -2,6 +2,7 @@ package uk.ac.ed.bikerental;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,7 +27,7 @@ public class MultidayDiscountsPolicy implements PricingPolicy {
 
     @Override
     public BigDecimal calculatePrice(Collection<Bike> bikes, DateRange duration) {
-        BigDecimal price= new BigDecimal(0);
+        BigDecimal price = new BigDecimal(0);
         long numOfDays = duration.toDays();
         BigDecimal percentage= chooseDiscount(numOfDays);
         for(Bike bike : bikes) {
@@ -39,6 +40,15 @@ public class MultidayDiscountsPolicy implements PricingPolicy {
     }
     
     
+    public MultidayDiscountsPolicy(Map<Integer, BigDecimal> discounts) {
+        this.prices = prices;
+        this.discounts = new HashMap<Integer, BigDecimal>();
+    }
+    
+    public MultidayDiscountsPolicy() {
+        this.prices = new HashMap<BikeType, BigDecimal>();
+        this.discounts = new HashMap<Integer, BigDecimal>();
+    }
     /**
      * Allows user to specify/update their pricing policy 
      *
