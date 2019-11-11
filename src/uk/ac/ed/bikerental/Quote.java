@@ -21,7 +21,7 @@ public class Quote {
     }
 
     public boolean reserveBikes() {
-        if (isEmpty()) {  // Why we want it to be empty?
+        if (isEmpty()) { 
             return false;
         }
         else {
