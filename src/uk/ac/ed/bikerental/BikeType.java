@@ -12,6 +12,7 @@ public class BikeType {
         assert !name.isEmpty();
         this.name = name;
         this.replecementValue = replecementValue;
+        BikeRentalSystem.getInstance().addBikeType(this);
     }
 
     public BigDecimal getReplacementValue() {

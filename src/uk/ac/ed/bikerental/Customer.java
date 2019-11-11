@@ -19,6 +19,7 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
+        BikeRentalSystem.getInstance().addCusomter(this);
     }
 
     public String getFirstName() {

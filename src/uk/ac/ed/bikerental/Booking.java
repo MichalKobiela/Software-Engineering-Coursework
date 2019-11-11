@@ -37,7 +37,7 @@ public class Booking {
         Collection<Bike> bikes = quote.getBikes();
         
         for (Bike bike : bikes) {
-            bike.setDatesReserved(null);
+            bike.setDatesReserved(null); // NO, this is bad, bike can be reserved for something in future and it will delete it
             bike.setInStore(true);      
         }
         
