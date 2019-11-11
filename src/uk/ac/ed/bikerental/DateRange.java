@@ -33,11 +33,34 @@ public class DateRange {
         LocalDate otherStart = other.getStart();
         LocalDate otherEnd = other.getEnd();
         if(start.isAfter(otherStart) && (start.isBefore(otherEnd))) {
-            return true;
+            return true; 
         }
+        
         if(end.isAfter(otherStart) && (end.isBefore(otherEnd))) {
-            return true;
+            return true; 
         }
+         
+        if(start.isAfter(otherStart) && end.isBefore(otherEnd)) {
+            return true; 
+        }
+        
+        // NOTE: this implementation is INCORRECT. This is because it doesn't
+        //       consider the case where one of the dateRanges fully encompasses
+        //       the other. That is, where the start of A is before the start
+        //       of B, and the end of A is after the end of B, especially in the
+        //       reverse case (where B encompasses A). A correct implementation
+        //       can be found in the commented out code below.
+        
+        /*
+         * if(start.isBefore(otherStart) && end.isAfter(otherStart)) { return true; }
+         * 
+         * if(otherStart.isBefore(start) && otherEnd.isAfter(end)) { return true; }
+         * 
+         * if(start.isBefore(otherStart) && end.isAfter(otherEnd)) { return true; }
+         * 
+         * if(otherStart.isBefore(start) && otherEnd.isAfter(otherEnd)) { return true; }
+         */
+        
 //        assert false; I don't know what to do with this
         return false;
     }
