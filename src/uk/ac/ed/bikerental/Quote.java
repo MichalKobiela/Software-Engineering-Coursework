@@ -21,7 +21,7 @@ public class Quote {
     }
 
     public boolean reserveBikes() {
-        if (isEmpty()) {
+        if (isEmpty()) {  // Why we want it to be empty?
            for(Bike bike: bikes) {
                 bike.reserve(dateRange);
            }

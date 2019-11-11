@@ -16,7 +16,6 @@ public class BikeType {
 
     public BigDecimal getReplacementValue() {
         return replecementValue;
-        //assert false;
     }
 
     public String getName() {

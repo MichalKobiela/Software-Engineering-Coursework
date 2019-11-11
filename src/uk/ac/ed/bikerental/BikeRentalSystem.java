@@ -56,7 +56,9 @@ public class BikeRentalSystem {
         return result;
     }
     public Booking bookQuote(Quote quote, Customer customer, boolean storeCollection) {
-        //TODO
+        //TODO reserve bikes maybe useful, probably we need to implement at this point deliverable stuff in bike 
+        // Probably it will be sufficient if we just add some attribute to bike e.g. beingDelivered and upadate it with
+        // those methods
         return null;
     }
     public boolean isCustomer(Customer customer) {

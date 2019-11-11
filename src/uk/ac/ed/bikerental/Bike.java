@@ -3,7 +3,7 @@ package uk.ac.ed.bikerental;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Bike {
+public class Bike implements Deliverable {
     private long bikeId;
     private BikeType type;
     private Collection<DateRange> datesReserved;
@@ -20,7 +20,7 @@ public class Bike {
         return type;
     }
     public boolean isAvailable(DateRange reserveRange) {
-        for(DateRange dateRange :datesReserved) {
+        for(DateRange dateRange : datesReserved) {
             if(dateRange.overlaps(reserveRange)) {
                 return false;
             }
@@ -56,6 +56,17 @@ public class Bike {
     }
     public void setType(BikeType type) {
         this.type = type;
+    }
+    
+    @Override
+    public void onPickup() {
+        // TODO Auto-generated method stub
+        
+    }
+    @Override
+    public void onDropoff() {
+        // TODO Auto-generated method stub
+        
     }
     
 }
