@@ -27,7 +27,7 @@ public class BikeProvider {
         this.phoneNumber = phoneNumber;
         this.openingHours=openingHours;
         this.depositRate = depositRate;
-        System.getInstance().addBikeProvider(this);
+        BikeRentalSystem.getInstance().addBikeProvider(this);
         
     }
     
@@ -122,14 +122,28 @@ public class BikeProvider {
             }
         }
     }
-    public void addBike(Bike bike) { // TODO create bike instance inside instead of Bike argument
+    public void addBike(Bike bike) { 
         BikeType type = bike.getType();
         if(!bikes.keySet().contains(type)) {
             bikes.put(type, new ArrayList<Bike>());
         }
         bikes.get(type).add(bike);
     }
-
+    public void addBike(long bikeid, BikeType type) { 
+        this.addBike(new Bike(bikeid, type));
+    }
+    public void addBikeType(String name, BigDecimal replecementValue) { 
+        BikeRentalSystem.getInstance().addBikeType(name, replecementValue);
+    }
+    public void addBike(long bikeid, String bikeType) { 
+        Optional<BikeType> typeFromSystem = BikeRentalSystem.getInstance().findBikeType(bikeType);
+         if(typeFromSystem.isPresent()) {
+             this.addBike(new Bike(bikeid, typeFromSystem.get())); 
+         }
+         else {
+             System.out.println("This type of bike is not in database. Please add it first using addBikeType()");
+         }
+    }
 
     public Location getLocation() {
         return shopAddress;

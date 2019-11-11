@@ -1,29 +1,47 @@
 package uk.ac.ed.bikerental;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 
-public class System {
+public class BikeRentalSystem {
     private Collection<Customer> customers;
     private Collection<BikeProvider> bikeProviders;
     private Collection<BikeType> bikeTypes;
     
     //Singleton class
-    private static System instance = new System();
+    private static BikeRentalSystem instance = new BikeRentalSystem();
     
-    public static System getInstance() {
+    public static BikeRentalSystem getInstance() {
         return instance;
     }
     
-    private System() {
+    private BikeRentalSystem() {
         customers= new HashSet<Customer>();
         bikeProviders= new HashSet<BikeProvider>();
         bikeTypes = new HashSet<BikeType>();
     }
     public boolean addBikeProvider(BikeProvider bikeProvider) {
         return bikeProviders.add(bikeProvider);
+    }
+    public boolean addCusomter(Customer customer) {
+        return customers.add(customer);
+    }
+    public boolean addBikeType(BikeType bikeType) {
+        return bikeTypes.add(bikeType);
+    }
+    public boolean addBikeType(String name, BigDecimal replacementValue) {
+        return bikeTypes.add(new BikeType(name, replacementValue));
+    }
+    public Optional<BikeType> findBikeType(String name) {
+        for(BikeType type : bikeTypes) {
+            if(type.getName().equals(name)) {
+                return Optional.of(type);
+            }
+        }
+        return Optional.empty();
     }
     public Collection<Quote> getQuotes(Map<BikeType, Integer> bikes, DateRange dateRange, Location location) {
         Collection<Quote> result = new HashSet<Quote>();
@@ -35,7 +53,7 @@ public class System {
                 }
             }
         }
-        return null;
+        return result;
     }
     public Booking bookQuote(Quote quote, Customer customer, boolean storeCollection) {
         //TODO
