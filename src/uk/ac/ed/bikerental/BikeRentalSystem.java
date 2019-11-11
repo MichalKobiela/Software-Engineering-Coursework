@@ -10,7 +10,7 @@ public class BikeRentalSystem {
     private Collection<Customer> customers;
     private Collection<BikeProvider> bikeProviders;
     private Collection<BikeType> bikeTypes;
-    
+    private Collection<Long> bookingIds;
     //Singleton class
     private static BikeRentalSystem instance = new BikeRentalSystem();
     
@@ -59,8 +59,20 @@ public class BikeRentalSystem {
         //TODO reserve bikes maybe useful, we need to implement at this point deliverable stuff in bike 
         // Probably it will be sufficient if we just add some attribute to bike e.g. beingDelivered and upadate it with
         // those methods
-        return null;
+        long bookingId = generateBookingId(quote, customer);
+        
+        Booking booking = new Booking(bookingId, quote, customer, storeCollection, customer.getAddress(), "", false, false, false);
+        
+        
+        return booking;
     }
+    
+    public long generateBookingId(Quote quote, Customer customer) {
+        long bookingId = 0;
+        //TODO need to come up with some way to make a bookingid and check that it's unique
+        return bookingId;
+    }
+    
     public boolean isCustomer(Customer customer) {
         return customers.contains(customer);
     }

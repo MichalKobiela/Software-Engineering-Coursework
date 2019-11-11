@@ -22,13 +22,13 @@ public class Quote {
 
     public boolean reserveBikes() {
         if (isEmpty()) {  // Why we want it to be empty?
-           for(Bike bike: bikes) {
+            return false;
+        }
+        else {
+            for(Bike bike: bikes) {
                 bike.reserve(dateRange);
            }
            return true;
-        }
-        else {
-            return false;
         }
 
     }
