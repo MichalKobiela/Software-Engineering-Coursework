@@ -27,6 +27,8 @@ public class BikeProvider {
         this.phoneNumber = phoneNumber;
         this.openingHours=openingHours;
         this.depositRate = depositRate;
+        System.getInstance().addBikeProvider(this);
+        
     }
     
     
@@ -120,12 +122,17 @@ public class BikeProvider {
             }
         }
     }
-    public void addBike(Bike bike) {
+    public void addBike(Bike bike) { // TODO create bike instance inside instead of Bike argument
         BikeType type = bike.getType();
         if(!bikes.keySet().contains(type)) {
             bikes.put(type, new ArrayList<Bike>());
         }
         bikes.get(type).add(bike);
+    }
+
+
+    public Location getLocation() {
+        return shopAddress;
     }
     
 }
