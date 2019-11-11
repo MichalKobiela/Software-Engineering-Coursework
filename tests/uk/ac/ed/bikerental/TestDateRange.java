@@ -78,6 +78,7 @@ class TestDateRange {
         assertEquals(18, this.dateRange2.toDays());
         assertEquals(1099, this.dateRange3.toDays());
         assertEquals(455459, this.dateRange4.toDays());
+        //
         // Note: I used an online date range calculator for the longer days
     }
 
