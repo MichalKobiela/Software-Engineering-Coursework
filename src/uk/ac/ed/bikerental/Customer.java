@@ -3,8 +3,7 @@ package uk.ac.ed.bikerental;
 public class Customer {
     private String firstName;
     private String lastName;
-    private String address;
-    private String postCode;
+    private Location address;
     private String phoneNumber;
     private String email;
     private String password;
@@ -14,8 +13,7 @@ public class Customer {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
-        this.postCode = postCode;
+        this.address = new Location(postCode, address);
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
@@ -38,21 +36,10 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    public String getAddress() {
+    public Location getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPostCode() {
-        return postCode;
-    }
-
-    public void setPostCode(String postCode) {
-        this.postCode = postCode;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;

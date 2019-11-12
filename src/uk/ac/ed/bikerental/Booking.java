@@ -8,16 +8,15 @@ public class Booking {
     private Quote quote;
     private Customer customer;
     private boolean storeCollection;
-    private String customerAddress;
+    private Location customerAddress;
     private String orderSummary;
     private boolean completed;
     private boolean depositPaid;
     private boolean depositReturned;
-    private DeliveryService deliveryService;
     
        
-    public Booking(long bookingId, Quote quote, Customer customer, boolean storeCollection, String customerAddress,
-            String orderSummary, boolean completed, boolean depositPaid, boolean depositReturned, DeliveryService deliveryService) {
+    public Booking(long bookingId, Quote quote, Customer customer, boolean storeCollection, Location customerAddress,
+            String orderSummary, boolean completed, boolean depositPaid, boolean depositReturned) {
         super();
         this.bookingId = bookingId;
         this.quote = quote;
@@ -28,7 +27,6 @@ public class Booking {
         this.completed = completed;
         this.depositPaid = depositPaid;
         this.depositReturned = depositReturned;
-        this.deliveryService = deliveryService;
 
     }
 
@@ -41,7 +39,7 @@ public class Booking {
         Collection<Bike> bikes = quote.getBikes();
         
         for (Bike bike : bikes) {
-            Collection<DateRange> datesReserved = bike.getDatesReserved(); // NO, this is bad, bike can be reserved for something in future and it will delete it
+            Collection<DateRange> datesReserved = bike.getDatesReserved();
             datesReserved.remove(quote.getDateRange());
             bike.setDatesReserved(datesReserved);
             bike.setInStore(true);      
@@ -72,12 +70,5 @@ public class Booking {
     public Quote getQuote() {
         return quote;
     }
-    
-    public DeliveryService getDeliveryService() {
-        return deliveryService;
-    }
-    
-    public void setDeliveryService(DeliveryService deliveryService) {
-        this.deliveryService = deliveryService;
-    }
+   
 }

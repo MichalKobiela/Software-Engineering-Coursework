@@ -1,14 +1,10 @@
 package uk.ac.ed.bikerental;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -46,7 +42,7 @@ public class MultidayDiscountsPolicy implements PricingPolicy {
     }
     
     
-    public MultidayDiscountsPolicy(Map<Integer, BigDecimal> discounts) {
+    public MultidayDiscountsPolicy(Map<Integer, BigDecimal> discounts, Map<BikeType, BigDecimal> prices) {
         this.prices = prices;
         this.discounts = new TreeMap<Integer, BigDecimal>();
     }

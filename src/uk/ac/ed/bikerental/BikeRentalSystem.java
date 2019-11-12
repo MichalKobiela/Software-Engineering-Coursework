@@ -62,9 +62,6 @@ public class BikeRentalSystem {
         return result;
     }
     public Booking bookQuote(Quote quote, Customer customer, boolean storeCollection, DeliveryService deliveryService) {
-        //TODO reserve bikes maybe useful, we need to implement at this point deliverable stuff in bike 
-        // Probably it will be sufficient if we just add some attribute to bike e.g. beingDelivered and upadate it with
-        // those methods
         long bookingId = generateBookingId(quote, customer);
         String orderSummary = "Order Summary:\nCustomer: " + customer.getFirstName() + " " + customer.getLastName() + "\n";
         orderSummary += "Booking ID: " + bookingId + "\n";
@@ -74,12 +71,14 @@ public class BikeRentalSystem {
         orderSummary += "Deposit: " + quote.getDeposit() + "\n";
         orderSummary += "In Store Collection: " + storeCollection;
   
-        Booking booking = new Booking(bookingId, quote, customer, storeCollection, customer.getAddress(), orderSummary, false, false, false, deliveryService);
+        Booking booking = new Booking(bookingId, quote, customer, storeCollection, customer.getAddress(), orderSummary, false, false, false);
         
         booking.getQuote().getBikeProvider().addBooking(booking);
   
         if(!storeCollection) {
-            booking.setDeliveryService(deliveryService);            
+            for(Bike bike : quote.getBikes()) {
+                DeliveryServiceFactory.getDeliveryService().scheduleDelivery(bike, quote.getBikeProvider().getLocation(), customer.getAddress(), quote.getDateRange().getStart());      
+            }
         }
         
         for(Bike bike : quote.getBikes()) {
