@@ -12,8 +12,6 @@ import java.util.TreeMap;
  * Class implements PricingPolicy allowing bike providers
  * to offer discounts based on length of the booking
  * 
- * Assumption: The discounts are getting bigger for longer durations
- * 
  *
  */
 public class MultidayDiscountsPolicy implements PricingPolicy {
@@ -38,7 +36,9 @@ public class MultidayDiscountsPolicy implements PricingPolicy {
         }
         BigDecimal multiplyFactor = new BigDecimal(1);
         multiplyFactor = multiplyFactor.subtract(percentage); // multiply factor is 1 - percentage
-        return price = price.multiply(multiplyFactor);
+        price = price.multiply(multiplyFactor);
+        price = price.multiply(new BigDecimal(numOfDays));
+        return price;
     }
     
     

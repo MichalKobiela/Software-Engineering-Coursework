@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,19 +21,39 @@ public class BikeProvider {
     private Map<BikeType, Collection<Bike>> bikes;
     private Collection<BikeProvider> partners;
     private Collection<Booking> bookings;
+    private ValuationPolicy valuationPolicy;
+    private PricingPolicy pricingPolicy;
     
-    
-    public BikeProvider(String name, String postCode, String address, String phoneNumber, TimeRange openingHours, BigDecimal depositRate) {
+    public BikeProvider(String name, String postCode, String streetAddress, String phoneNumber, TimeRange openingHours, BigDecimal depositRate) {
         this.name = name;
-        this.shopAddress= new Location(postCode, address);
+        this.shopAddress= new Location(postCode, streetAddress);
         this.phoneNumber = phoneNumber;
-        this.openingHours=openingHours;
+        this.openingHours = openingHours;
         this.depositRate = depositRate;
+        this.bikes = new HashMap<BikeType, Collection<Bike>>();
+        this.dailyRentalPrice = new HashMap<BikeType, BigDecimal>();
+        this.partners = new HashSet<BikeProvider>();
+        this.bookings = new HashSet<Booking>();
         BikeRentalSystem.getInstance().addBikeProvider(this);
+        this.valuationPolicy = new StandardValuationPolicy();
+        this.pricingPolicy = new StandardPricingPolicy();
         
     }
     
     
+    
+    public void setCustomValuationPolicy(ValuationPolicy valuationPolicy) {
+        this.valuationPolicy = valuationPolicy;
+    }
+
+
+
+    public void setCustomPricingPolicy(PricingPolicy pricingPolicy) {
+        this.pricingPolicy = pricingPolicy;
+    }
+
+
+
     public void registerDepositReturn(long bookingId){
         for(Booking booking : bookings) {
             if(booking.getBookingId() == bookingId) {
@@ -67,20 +89,19 @@ public class BikeProvider {
                 return Optional.empty();
             }
         }
-        BigDecimal totalPrice = calculatePrcie(bikesToOffer);
-        Quote quote = new Quote(this, dateRange, totalPrice, totalPrice.multiply(depositRate), bikesToOffer); //TODO deposit and totalPrice
+        BigDecimal totalPrice = pricingPolicy.calculatePrice(bikesToOffer, dateRange);
+        BigDecimal totalDeposit = calculateDeposit(bikesToOffer, dateRange);
+        Quote quote = new Quote(this, dateRange, totalPrice, totalDeposit, bikesToOffer); 
         return Optional.of(quote);
     }
     
-    private BigDecimal calculatePrcie(Collection<Bike> bikes) {
-            BigDecimal price = new BigDecimal(0);
-            for(Bike bike : bikes) {
-                BigDecimal priceOfBike = dailyRentalPrice.get(bike.getType());
-                price.add(priceOfBike);
-            }
-            return price;
+    private BigDecimal calculateDeposit(ArrayList<Bike> bikesToOffer, DateRange dateRange) {
+        BigDecimal result = new BigDecimal(0);
+        for(Bike bike : bikesToOffer) {
+            result = result.add(bike.getType().getReplacementValue());
+        }
+        return result.multiply(depositRate);
     }
-
 
 
     private Collection<Bike> findBikes(BikeType bikeType, int quantity, DateRange dateRange) {
@@ -124,13 +145,32 @@ public class BikeProvider {
     }
     public void addBike(Bike bike) { 
         BikeType type = bike.getType();
-        if(!bikes.keySet().contains(type)) {
-            bikes.put(type, new ArrayList<Bike>());
+        if(dailyRentalPrice.containsKey(bike.getType())) {
+            if(!bikes.keySet().contains(type)) {
+                bikes.put(type, new ArrayList<Bike>());
+            }
+            bikes.get(type).add(bike);
+            }
+        else {
+            System.out.println("Operation unsuccessful. Please set daily price for this type of bike first.");
         }
-        bikes.get(type).add(bike);
     }
     public void addBike(long bikeid, BikeType type) { 
-        this.addBike(new Bike(bikeid, type));
+        if(dailyRentalPrice.containsKey(type)) {
+            this.addBike(new Bike(bikeid, type));
+        }
+        else {
+            System.out.println("Operation unsuccessful. Please set daily price for this type of bike first.");
+        }
+    }
+    public void setDailyRentalPrice(BikeType bikeType, BigDecimal dailyPrice) {
+        if(BikeRentalSystem.getInstance().containsType(bikeType)) {
+            dailyRentalPrice.put(bikeType, dailyPrice);
+            pricingPolicy.setDailyRentalPrice(bikeType, dailyPrice);
+        }
+        else {
+            System.out.println("Operation unsuccessful. Please add bike type to the system first.");
+        }
     }
     public void addBikeType(String name, BigDecimal replecementValue) { 
         BikeRentalSystem.getInstance().addBikeType(name, replecementValue);

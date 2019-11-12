@@ -30,8 +30,8 @@ public class MultidayDiscountPolicyTests {
         bike1 = new Bike(1,type1);
         bike2 = new Bike(2,type1);
         bike3 = new Bike(3,type2);
-        bike4 = new Bike(1,type1);
-        bike5 = new Bike(1,type3);
+        bike4 = new Bike(4,type1);
+        bike5 = new Bike(5,type3);
         bikes = new HashSet<Bike>();
         bikes.add(bike1);
         bikes.add(bike2);
@@ -63,7 +63,7 @@ public class MultidayDiscountPolicyTests {
         policy2 = new MultidayDiscountsPolicy();
         policy2.setDiscount(3, "0.05");
         policy2.setDiscount(5, "0.02");
-        policy2.setDiscount(10, "0.11");
+        policy2.setDiscount(11, "0.11");
         policy2.setDailyRentalPrice(type1, high);
         policy2.setDailyRentalPrice(type2, medium);
         policy2.setDailyRentalPrice(type3, low);
@@ -76,8 +76,9 @@ public class MultidayDiscountPolicyTests {
         LocalDate date1 = LocalDate.of(2019, 11, 1);
         LocalDate date2 = LocalDate.of(2019, 11, 5);
         DateRange dateRange = new DateRange(date1, date2);
-        // should be (3*1500+300+50.12)*0.95 = 4607.614
-        assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("4607.614")),0);
+        // should be (3*1500+300+50.12)*0.95 = 4607.614 a day
+        // overall 
+        assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("18430.456")),0);
     }
     
     @Test
@@ -96,8 +97,9 @@ public class MultidayDiscountPolicyTests {
         LocalDate date1 = LocalDate.of(2019, 11, 1);
         LocalDate date2 = LocalDate.of(2019, 11, 6);
         DateRange dateRange = new DateRange(date1, date2);
-        // should be (3*1500+300+50.12)*0.9 = 4365.108
-        assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("4365.108")),0);
+        // should be (3*1500+300+50.12)*0.9 = 4365.108 a day
+        // overall 21825.54 
+        assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("21825.54")),0);
     }
     
     @Test
@@ -106,8 +108,9 @@ public class MultidayDiscountPolicyTests {
         LocalDate date1 = LocalDate.of(2019, 11, 1);
         LocalDate date2 = LocalDate.of(2019, 11, 7);
         DateRange dateRange = new DateRange(date1, date2);
-        // should be (3*1500+300+50.12)*0.9 = 4365.108
-        assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("4365.108")),0);
+        // should be (3*1500+300+50.12)*0.9 = 4365.108 a day
+        // overall 26190.648
+        assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("26190.648")),0);
     }
     @Test
     void test5() {
@@ -116,17 +119,19 @@ public class MultidayDiscountPolicyTests {
         LocalDate date2 = LocalDate.of(2019, 11, 7);
         DateRange dateRange = new DateRange(date1, date2);
         policy1.resetDiscounts();
-        // should be (3*1500+300+50.12)*1 = 4850.12
-        assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("4850.12")),0);
+        // should be (3*1500+300+50.12)*1 = 4850.12 a day
+        // overall 29100.72
+        assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("29100.72")),0);
     }
     @Test
     void test6() {
         // 11 days with policy2
         LocalDate date1 = LocalDate.of(2019, 11, 1);
-        LocalDate date2 = LocalDate.of(2019, 11, 11);
+        LocalDate date2 = LocalDate.of(2019, 11, 12);
         DateRange dateRange = new DateRange(date1, date2);
-        // should be (3*1500+300+50.12)*0.89 = 4316.6068
-        assertEquals(policy2.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("4316.6068")),0);
+        // should be (3*1500+300+50.12)*0.89 = 4316.6068 a day
+        // overall 47482.6748
+        assertEquals(policy2.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("47482.6748")),0);
     }
     @Test
     void test7() {
@@ -135,7 +140,8 @@ public class MultidayDiscountPolicyTests {
         LocalDate date2 = LocalDate.of(2019, 11, 11);
         DateRange dateRange = new DateRange(date1, date2);
         // should be (3*1500+300+50.12)*0.98 = 4753.1176
-        assertEquals(policy2.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("4753.1176")),0);
+        // overall 42778.0584;
+        assertEquals(policy2.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("42778.0584")),0);
     }
     
 }

@@ -27,7 +27,7 @@ public class SystemTests {
     // TODO: Write system tests covering the three main use cases
 
     @Test
-    void myFirstTest() {
+    void test1() {
         // JUnit tests look like this
         assertEquals("The moon", "cheese"); // Should fail
     }

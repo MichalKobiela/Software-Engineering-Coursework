@@ -36,18 +36,17 @@ public class DateRange {
             return true; 
         }
          
-        if(otherStart.isBefore(start) && otherEnd.isAfter(end)){
+        if(otherStart.isBefore(start) && otherEnd.isAfter(start)){
             return true;
         }
          
-        if(start.isBefore(otherStart) && end.isAfter(otherEnd)){ 
+        if(start.isBefore(otherEnd) && end.isAfter(otherEnd)){ 
             return true; 
         }
          
-        if(otherStart.isBefore(start) && otherEnd.isAfter(otherEnd)){
+        if(otherStart.isBefore(end) && otherEnd.isAfter(end)){
             return true;
         }
-//        assert false; I don't know what to do with this
         return false;
     }
 

@@ -40,7 +40,6 @@ public class Customer {
         return address;
     }
 
-
     public String getPhoneNumber() {
         return phoneNumber;
     }

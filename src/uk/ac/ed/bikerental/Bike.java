@@ -18,7 +18,6 @@ public class Bike implements Deliverable {
         this.isBeingDelivered = false;
     }
     public BikeType getType() {
-        //assert false;
         return type;
     }
     public boolean isAvailable(DateRange reserveRange) {
