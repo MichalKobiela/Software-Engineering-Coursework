@@ -83,9 +83,6 @@ public class BikeRentalSystem {
         
         for(Bike bike : quote.getBikes()) {
             bike.getDatesReserved().add(quote.getDateRange());
-            if (!storeCollection) {
-                bike.onDropoff();
-            }
         }
         
         return booking;
