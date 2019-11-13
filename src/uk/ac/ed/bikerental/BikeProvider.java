@@ -2,6 +2,7 @@
 package uk.ac.ed.bikerental;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,27 +55,50 @@ public class BikeProvider {
 
 
 
-    public void registerDepositReturn(long bookingId){
+    public Optional<Booking> registerDepositReturn(long bookingId){
         for(Booking booking : bookings) {
             if(booking.getBookingId() == bookingId) {
                 booking.registerDepositReturn();
+                return Optional.of(booking);
+
             }
         }
+        return Optional.empty();
+    }
+    
+    public void registerDepositReturnToPartner(BikeProvider partner, long bookingId){
+            Optional<Booking> bookingOpt = partner.registerDepositReturn(bookingId);
+            if(bookingOpt.isPresent()) {
+                Booking booking = bookingOpt.get();
+                // Provider transfers money to partner
+                booking.registerDepositReturn();
+            }
+            else {
+                System.out.println("Booking not found. Please communicate directly with partner to resolve the issue.");
+            }
     }
     
     public void registerBikeReturnToPartner(BikeProvider partner, long bikeId) {
-        partner.registerBikeReturn(bikeId);
+        Optional<Bike> bikeOpt = partner.registerBikeReturn(bikeId);;
+        if(bikeOpt.isPresent()) {
+            DeliveryServiceFactory.getDeliveryService().scheduleDelivery(bikeOpt.get(), this.shopAddress
+                , partner.getLocation(), LocalDate.now());
+        }
+        else {
+            System.out.println("Bike not found. Please communicate directly with partner to resolve the issue.");            
+        }
     }
     
-    
-    public void registerBikeReturn(long bikeId) {
+    public Optional<Bike> registerBikeReturn(long bikeId) {
         for(BikeType key : bikes.keySet()) {
             for(Bike bike : bikes.get(key)) {
                 if(bike.getBikeId() == bikeId) {
                     bike.setInStore(true);
+                    return Optional.of(bike);
                 }
             }
         }
+        return Optional.empty();
     }
     public Optional<Quote> getQuote(Map<BikeType, Integer> bikeMap, DateRange dateRange){
         assert !bikeMap.keySet().isEmpty();
@@ -106,16 +130,18 @@ public class BikeProvider {
 
     private Collection<Bike> findBikes(BikeType bikeType, int quantity, DateRange dateRange) {
         Collection<Bike> result = new ArrayList<Bike>();
-        Collection<Bike> listOfBikes = bikes.get(bikeType);
-        int counter = 0;
-        for(Bike bike : listOfBikes) {
-           if(bike.isAvailable(dateRange)) {
-               result.add(bike);
-               counter++;
-               if(counter == quantity) {
-                   break;
+        if(bikes.keySet().contains(bikeType)) {
+            Collection<Bike> listOfBikes = bikes.get(bikeType);
+            int counter = 0;
+            for(Bike bike : listOfBikes) {
+               if(bike.isAvailable(dateRange)) {
+                   result.add(bike);
+                   counter++;
+                   if(counter == quantity) {
+                       break;
+                   }
                }
-           }
+            }
         }
         return result;
         

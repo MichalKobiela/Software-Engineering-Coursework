@@ -7,16 +7,15 @@ public class Quote {
     private BikeProvider bikeProvider;
     private DateRange dateRange;
     private BigDecimal totalPrice;
-    private BigDecimal deposit;
+    private Deposit deposit;
     private Collection<Bike> bikes;
     
     public Quote(BikeProvider bikeProvider, DateRange dateRange, BigDecimal totalPrice, BigDecimal deposit,
             Collection<Bike> bikes) {
-        super();
         this.bikeProvider = bikeProvider;
         this.dateRange = dateRange;
         this.totalPrice = totalPrice;
-        this.deposit = deposit;
+        this.deposit = new Deposit(deposit, false, false);
         this.bikes = bikes;
     }
 
@@ -67,7 +66,7 @@ public class Quote {
         return totalPrice;
     }
     
-    public BigDecimal getDeposit() {
+    public Deposit getDeposit() {
         return deposit;
     }
     

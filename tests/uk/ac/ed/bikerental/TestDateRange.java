@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TestDateRange {
-    private DateRange dateRange1, dateRange2, dateRange3, dateRange4, dateRange5;
+    private DateRange dateRange1, dateRange2, dateRange3, dateRange4, dateRange5, dateRange6;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -18,6 +18,7 @@ class TestDateRange {
         this.dateRange3 = new DateRange(LocalDate.of(2015, 1, 7), LocalDate.of(2018, 1, 10));
         this.dateRange4 = new DateRange(LocalDate.of(1753, 5, 5), LocalDate.of(3000, 5, 7));
         this.dateRange5 = new DateRange(LocalDate.of(3001, 1, 1), LocalDate.of(3001, 2, 1));
+        this.dateRange6 = new DateRange(LocalDate.of(3001, 2, 1), LocalDate.of(3001, 2, 2));
 
     }
 
@@ -63,6 +64,13 @@ class TestDateRange {
         assertEquals(false, this.dateRange5.overlaps(dateRange3));
         assertEquals(false, this.dateRange5.overlaps(dateRange4));
 
+    }
+    
+    @Test
+    void testEdgeCases() {
+        assertEquals(true, this.dateRange1.overlaps(dateRange1));
+        assertEquals(true, this.dateRange5.overlaps(dateRange6));
+        assertEquals(true, this.dateRange6.overlaps(dateRange5));
     }
 
     // TODO: put some of your own unit tests here

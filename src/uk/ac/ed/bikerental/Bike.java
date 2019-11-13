@@ -9,6 +9,7 @@ public class Bike implements Deliverable {
     private Collection<DateRange> datesReserved;
     private boolean isInStore;
     private boolean isBeingDelivered;
+    private boolean deliveryComplete;
     
     public Bike(long bikeId, BikeType type) {
         this.bikeId = bikeId;
@@ -16,6 +17,7 @@ public class Bike implements Deliverable {
         this.isInStore = true;
         this.datesReserved = new ArrayList<DateRange>();
         this.isBeingDelivered = false;
+        this.deliveryComplete = false;
     }
     public BikeType getType() {
         return type;
@@ -49,6 +51,9 @@ public class Bike implements Deliverable {
     public void setBikeId(long bikeId) {
         this.bikeId = bikeId;
     }
+    public boolean isBeingDelivered() {
+        return isBeingDelivered;
+    }
     public boolean isInStore() {
         return isInStore;
     }
@@ -59,15 +64,22 @@ public class Bike implements Deliverable {
         this.type = type;
     }
     
+    public boolean isDeliveryComplete() {
+        return deliveryComplete;
+    }
+    
     @Override
     public void onPickup() {
-        // TODO Auto-generated method stub
+        isBeingDelivered = true;
+        deliveryComplete = false;
+        isInStore=false;
         
     }
     @Override
     public void onDropoff() {
-        // TODO Auto-generated method stub
-        
+        isBeingDelivered = false;
+        deliveryComplete = true;
+        isInStore=true;
     }
     
 }

@@ -11,44 +11,39 @@ public class Booking {
     private Location customerAddress;
     private String orderSummary;
     private boolean completed;
-    private boolean depositPaid;
-    private boolean depositReturned;
+    private Deposit deposit;
     
        
     public Booking(long bookingId, Quote quote, Customer customer, boolean storeCollection, Location customerAddress,
-            String orderSummary, boolean completed, boolean depositPaid, boolean depositReturned) {
+            String orderSummary) {
         super();
         this.bookingId = bookingId;
         this.quote = quote;
+        this.deposit= quote.getDeposit();
         this.customer = customer;
         this.storeCollection = storeCollection;
         this.customerAddress = customerAddress;
         this.orderSummary = orderSummary;
-        this.completed = completed;
-        this.depositPaid = depositPaid;
-        this.depositReturned = depositReturned;
+        this.completed = false;
+        
+    }
 
+    public Deposit getDeposit() {
+        return deposit;
     }
 
     public void registerDepositReturn() {
-        depositReturned = true;
+        deposit.depositReturn();
     }
     
     public void makeCompleted() {
-        //TODO for all Bike in Booking, clear dateRange, set in store to true, make completed true, deposit return to true
-        Collection<Bike> bikes = quote.getBikes();
-        
-        for (Bike bike : bikes) {
-            Collection<DateRange> datesReserved = bike.getDatesReserved();
-            datesReserved.remove(quote.getDateRange());
-            bike.setDatesReserved(datesReserved);
-            bike.setInStore(true);      
-        }
-        
-        depositReturned = true;
         completed = true; 
     }
     
+    public boolean isCompleted() {
+        return completed;
+    }
+
     public String toString() {
         String stringOut = "";
         
@@ -69,6 +64,19 @@ public class Booking {
     
     public Quote getQuote() {
         return quote;
+    }
+
+    public void depositPaid() {
+        this.deposit.depositPaid();
+        
+    }
+
+    public void bikesGivenToCustomer() {
+        Collection<Bike> bikes = quote.getBikes();  
+        for (Bike bike : bikes) {
+            Collection<DateRange> datesReserved = bike.getDatesReserved();
+            bike.setInStore(false);      
+        }      
     }
    
 }
