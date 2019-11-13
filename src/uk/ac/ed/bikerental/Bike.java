@@ -1,5 +1,6 @@
 package uk.ac.ed.bikerental;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -10,6 +11,7 @@ public class Bike implements Deliverable {
     private boolean isInStore;
     private boolean isBeingDelivered;
     private boolean deliveryComplete;
+    private LocalDate dateOfProduction;
     
     public Bike(long bikeId, BikeType type) {
         this.bikeId = bikeId;
@@ -18,6 +20,14 @@ public class Bike implements Deliverable {
         this.datesReserved = new ArrayList<DateRange>();
         this.isBeingDelivered = false;
         this.deliveryComplete = false;
+        this.dateOfProduction = LocalDate.now();
+    }
+    
+    public LocalDate getDateOfProduction() {
+        return dateOfProduction;
+    }
+    public void setDateOfProduction(LocalDate dateOfProduction) {
+        this.dateOfProduction = dateOfProduction;
     }
     public BikeType getType() {
         return type;
