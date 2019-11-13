@@ -74,7 +74,7 @@ public class MultidayDiscountPolicyTests {
     void test1() {
         // 4 days
         LocalDate date1 = LocalDate.of(2019, 11, 1);
-        LocalDate date2 = LocalDate.of(2019, 11, 5);
+        LocalDate date2 = LocalDate.of(2019, 11, 4);
         DateRange dateRange = new DateRange(date1, date2);
         // should be (3*1500+300+50.12)*0.95 = 4607.614 a day
         // overall 
@@ -85,7 +85,7 @@ public class MultidayDiscountPolicyTests {
     void test2() {
         // 1 day
         LocalDate date1 = LocalDate.of(2019, 11, 1);
-        LocalDate date2 = LocalDate.of(2019, 11, 2);
+        LocalDate date2 = LocalDate.of(2019, 11, 1);
         DateRange dateRange = new DateRange(date1, date2);
         // should be (3*1500+300+50.12) = 4850.12
         assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("4850.12")),0);
@@ -95,7 +95,7 @@ public class MultidayDiscountPolicyTests {
     void test3() {
         // 5 days
         LocalDate date1 = LocalDate.of(2019, 11, 1);
-        LocalDate date2 = LocalDate.of(2019, 11, 6);
+        LocalDate date2 = LocalDate.of(2019, 11, 5);
         DateRange dateRange = new DateRange(date1, date2);
         // should be (3*1500+300+50.12)*0.9 = 4365.108 a day
         // overall 21825.54 
@@ -106,7 +106,7 @@ public class MultidayDiscountPolicyTests {
     void test4() {
         // 6 days
         LocalDate date1 = LocalDate.of(2019, 11, 1);
-        LocalDate date2 = LocalDate.of(2019, 11, 7);
+        LocalDate date2 = LocalDate.of(2019, 11, 6);
         DateRange dateRange = new DateRange(date1, date2);
         // should be (3*1500+300+50.12)*0.9 = 4365.108 a day
         // overall 26190.648
@@ -116,7 +116,7 @@ public class MultidayDiscountPolicyTests {
     void test5() {
         // 6 days after reseting discounts
         LocalDate date1 = LocalDate.of(2019, 11, 1);
-        LocalDate date2 = LocalDate.of(2019, 11, 7);
+        LocalDate date2 = LocalDate.of(2019, 11, 6);
         DateRange dateRange = new DateRange(date1, date2);
         policy1.resetDiscounts();
         // should be (3*1500+300+50.12)*1 = 4850.12 a day
@@ -127,7 +127,7 @@ public class MultidayDiscountPolicyTests {
     void test6() {
         // 11 days with policy2
         LocalDate date1 = LocalDate.of(2019, 11, 1);
-        LocalDate date2 = LocalDate.of(2019, 11, 12);
+        LocalDate date2 = LocalDate.of(2019, 11, 11);
         DateRange dateRange = new DateRange(date1, date2);
         // should be (3*1500+300+50.12)*0.89 = 4316.6068 a day
         // overall 47482.6748
@@ -137,7 +137,7 @@ public class MultidayDiscountPolicyTests {
     void test7() {
         // 9 days with policy2
         LocalDate date1 = LocalDate.of(2019, 11, 2);
-        LocalDate date2 = LocalDate.of(2019, 11, 11);
+        LocalDate date2 = LocalDate.of(2019, 11, 10);
         DateRange dateRange = new DateRange(date1, date2);
         // should be (3*1500+300+50.12)*0.98 = 4753.1176
         // overall 42778.0584;

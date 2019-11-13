@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 public class BikeProvider {
@@ -51,6 +52,9 @@ public class BikeProvider {
 
     public void setCustomPricingPolicy(PricingPolicy pricingPolicy) {
         this.pricingPolicy = pricingPolicy;
+        for(Entry<BikeType, BigDecimal> entry : dailyRentalPrice.entrySet()) {
+            pricingPolicy.setDailyRentalPrice(entry.getKey(), entry.getValue());
+        }
     }
 
 

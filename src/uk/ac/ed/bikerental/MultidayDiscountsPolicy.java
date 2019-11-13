@@ -28,7 +28,7 @@ public class MultidayDiscountsPolicy implements PricingPolicy {
     @Override
     public BigDecimal calculatePrice(Collection<Bike> bikes, DateRange duration) {
         BigDecimal price = new BigDecimal(0);
-        long numOfDays = duration.toDays();
+        long numOfDays = duration.toDays()+1;
         BigDecimal percentage= chooseDiscount(numOfDays);
         for(Bike bike : bikes) {
             BigDecimal priceOfBike = prices.get(bike.getType());

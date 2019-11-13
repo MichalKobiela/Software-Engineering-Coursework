@@ -158,7 +158,7 @@ public class SystemTests {
     }
     
     @Test
-    void getQuotetest7() {
+    void getQuotetestDeposit() {
         bike1a.reserve(overlappingDateRange);
         bike2a.reserve(overlappingDateRange);
         Collection<Quote> quotes = sys.getQuotes(bikeMap1, dateRange, new Location("EH4 789", "Clerk Stret 7"));
@@ -169,14 +169,28 @@ public class SystemTests {
     }
     
     @Test
-    void getQuotetest8() {
+    void getQuotetestPrice() {
         bike1a.reserve(overlappingDateRange);
         bike2a.reserve(overlappingDateRange);
         Collection<Quote> quotes = sys.getQuotes(bikeMap1, dateRange, new Location("EH4 789", "Clerk Stret 7"));
         Iterator<Quote> quotesIterator = quotes.iterator();
         Quote quote = quotesIterator.next(); //there should be exactly one offer
-        // price should not be zero
-        assertEquals(quote.getTotalPrice().compareTo(new BigDecimal(0)), 1);
+        // price should (2*10+20)*5=200
+        assertEquals(quote.getTotalPrice().compareTo(new BigDecimal(200)), 0);
+    }
+    
+    @Test
+    void getQuotetestCustomPricingPolicy() {
+        MultidayDiscountsPolicy pricingPolicy = new MultidayDiscountsPolicy();
+        pricingPolicy.setDiscount(2, "0.05");
+        provider1.setCustomPricingPolicy(pricingPolicy);
+        bike1a.reserve(overlappingDateRange);
+        bike2a.reserve(overlappingDateRange);
+        Collection<Quote> quotes = sys.getQuotes(bikeMap1, dateRange, new Location("EH4 789", "Clerk Stret 7"));
+        Iterator<Quote> quotesIterator = quotes.iterator();
+        Quote quote = quotesIterator.next(); //there should be exactly one offer
+        // price should be 200*0.95=190
+        assertEquals(quote.getTotalPrice().compareTo(new BigDecimal(190)), 0);
     }
     
     @Test
