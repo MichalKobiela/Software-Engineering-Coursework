@@ -13,14 +13,14 @@ public class Bike implements Deliverable {
     private boolean deliveryComplete;
     private LocalDate dateOfProduction;
     
-    public Bike(long bikeId, BikeType type) {
+    public Bike(long bikeId, BikeType type, LocalDate manufactureDate) {
         this.bikeId = bikeId;
         this.type = type;
         this.isInStore = true;
         this.datesReserved = new ArrayList<DateRange>();
         this.isBeingDelivered = false;
         this.deliveryComplete = false;
-        this.dateOfProduction = LocalDate.now();
+        this.dateOfProduction = manufactureDate;
     }
     
     public LocalDate getDateOfProduction() {

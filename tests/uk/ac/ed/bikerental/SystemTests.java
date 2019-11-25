@@ -21,7 +21,7 @@ public class SystemTests {
     BigDecimal high, medium, low;
     BikeType type1, type2, type3;
     Bike bike1, bike2, bike3, bike4, bike5, bike6, bike7, bike8, bike9, bike10, bike1a, bike2a, bike3a, bike4a, bike5a, bike1b;
-    LocalDate date1, date2, date3, date4;
+    LocalDate date1, date2, date3, date4, manfuacturedate;
     DateRange dateRange, overlappingDateRange;
     HashMap<BikeType, Integer> bikeMap1;
     static BikeRentalSystem sys;
@@ -45,16 +45,16 @@ public class SystemTests {
         type1 = new BikeType("type1",high);
         type2 = new BikeType("type2",medium);
         type3 = new BikeType("type3",low);
-        bike1 = new Bike(1,type1);
-        bike2 = new Bike(2,type1);
-        bike3 = new Bike(3,type1);
-        bike4 = new Bike(4,type1);
-        bike5 = new Bike(5,type2);
-        bike6 = new Bike(6,type2);
-        bike7 = new Bike(7,type3);
-        bike8 = new Bike(8,type3);
-        bike9 = new Bike(9,type3);
-        bike10 = new Bike(10,type3);
+        bike1 = new Bike(1,type1, manfuacturedate);
+        bike2 = new Bike(2,type1, manfuacturedate);
+        bike3 = new Bike(3,type1, manfuacturedate);
+        bike4 = new Bike(4,type1, manfuacturedate);
+        bike5 = new Bike(5,type2, manfuacturedate);
+        bike6 = new Bike(6,type2, manfuacturedate);
+        bike7 = new Bike(7,type3, manfuacturedate);
+        bike8 = new Bike(8,type3, manfuacturedate);
+        bike9 = new Bike(9,type3, manfuacturedate);
+        bike10 = new Bike(10,type3, manfuacturedate);
         provider1.setDailyRentalPrice(type1, new BigDecimal(10));
         provider1.setDailyRentalPrice(type2, new BigDecimal(20));
         provider1.setDailyRentalPrice(type3, new BigDecimal("25.5"));
@@ -69,10 +69,10 @@ public class SystemTests {
         provider1.addBike(bike9);
         provider1.addBike(bike10);
         
-        bike1a = new Bike(1,type1);
-        bike2a = new Bike(2,type1);
-        bike3a = new Bike(3,type1);
-        bike4a = new Bike(4,type2);
+        bike1a = new Bike(1,type1, manfuacturedate);
+        bike2a = new Bike(2,type1, manfuacturedate);
+        bike3a = new Bike(3,type1, manfuacturedate);
+        bike4a = new Bike(4,type2, manfuacturedate);
         
         provider2.setDailyRentalPrice(type1, new BigDecimal(15));
         provider2.setDailyRentalPrice(type2, new BigDecimal(25));
@@ -82,7 +82,7 @@ public class SystemTests {
         provider2.addBike(bike3a);
         provider2.addBike(bike4a);
         
-        bike1b = new Bike(1,type1);
+        bike1b = new Bike(1,type1, manfuacturedate);
         provider3.setDailyRentalPrice(type1, new BigDecimal(5));
         provider3.setDailyRentalPrice(type2, new BigDecimal(12));
         provider3.setDailyRentalPrice(type3, new BigDecimal("32.5"));
@@ -92,6 +92,7 @@ public class SystemTests {
         bikeMap1.put(type1, 2);
         bikeMap1.put(type2, 1);
         
+        manfuacturedate = LocalDate.of(2010, 11, 1);
         date1 = LocalDate.of(2019, 11, 1);
         date2 = LocalDate.of(2019, 11, 5);
         dateRange = new DateRange(date1, date2);
@@ -181,7 +182,7 @@ public class SystemTests {
     
     @Test
     void getQuotetestCustomPricingPolicy() {
-        MultidayDiscountsPolicy pricingPolicy = new MultidayDiscountsPolicy();
+        MultidayDiscountsPolicy pricingPolicy = new MultidayDiscountsPolicy(); // custom pricing policy
         pricingPolicy.setDiscount(2, "0.05");
         provider1.setCustomPricingPolicy(pricingPolicy);
         bike1a.reserve(overlappingDateRange);

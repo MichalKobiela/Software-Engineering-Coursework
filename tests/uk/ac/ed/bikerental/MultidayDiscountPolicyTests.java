@@ -17,21 +17,22 @@ public class MultidayDiscountPolicyTests {
     private Bike bike1, bike2, bike3, bike4, bike5;
     private MultidayDiscountsPolicy policy1, policy2;
     private Collection<Bike> bikes;
-    
+    private LocalDate manfuacturedate;
     @BeforeEach
     void setUp() throws Exception {
         this.high = new BigDecimal(1500);
         this.medium = new BigDecimal(300);
         this.low = new BigDecimal("50.12");
+        this.manfuacturedate= LocalDate.of(2010, 11, 1);
         
         type1 = new BikeType("type1",high);
         type2 = new BikeType("type1",medium);
         type3 = new BikeType("type1",low);
-        bike1 = new Bike(1,type1);
-        bike2 = new Bike(2,type1);
-        bike3 = new Bike(3,type2);
-        bike4 = new Bike(4,type1);
-        bike5 = new Bike(5,type3);
+        bike1 = new Bike(1,type1, manfuacturedate);
+        bike2 = new Bike(2,type1, manfuacturedate );
+        bike3 = new Bike(3,type2, manfuacturedate);
+        bike4 = new Bike(4,type1, manfuacturedate);
+        bike5 = new Bike(5,type3, manfuacturedate);
         bikes = new HashSet<Bike>();
         bikes.add(bike1);
         bikes.add(bike2);

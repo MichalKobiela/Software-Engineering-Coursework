@@ -31,7 +31,8 @@ public class Deposit implements Deliverable {
         this.paid = depositPaid;
         this.returned = depositReturned;
     }
-
+    // When bike provider use delivery system to deliver deposit to customer it means that delivery will collect deposit from customer
+    // and then it is assumed that delivery will tranfer money to bike provider outside the system.
     @Override
     public void onPickup() {
         isBeingDelivered = true;
