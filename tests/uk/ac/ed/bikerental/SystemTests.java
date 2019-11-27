@@ -109,6 +109,10 @@ public class SystemTests {
     @Test
     void getQuotetest1() {
         //provider one and two can offer a quote for bikeMap1 so size must be 2;
+        Collection<Bike> bikes1= new HashSet<Bike>();
+        bikes1.add(bike1a);
+        bikes1.add(bike2a);
+        Quote quote1= new Quote(provider2,dateRange,new BigDecimal("275"),new BigDecimal("495"),bikes1);
         assertEquals(sys.getQuotes(bikeMap1, dateRange, new Location("EH4 789", "Clerk Stret 7")).size(), 2);
 
     }

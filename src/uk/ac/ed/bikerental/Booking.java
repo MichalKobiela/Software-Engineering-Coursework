@@ -66,6 +66,64 @@ public class Booking {
         return quote;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (bookingId ^ (bookingId >>> 32));
+        result = prime * result + (completed ? 1231 : 1237);
+        result = prime * result + ((customer == null) ? 0 : customer.hashCode());
+        result = prime * result + ((customerAddress == null) ? 0 : customerAddress.hashCode());
+        result = prime * result + ((deposit == null) ? 0 : deposit.hashCode());
+        result = prime * result + ((orderSummary == null) ? 0 : orderSummary.hashCode());
+        result = prime * result + ((quote == null) ? 0 : quote.hashCode());
+        result = prime * result + (storeCollection ? 1231 : 1237);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Booking other = (Booking) obj;
+        if (bookingId != other.bookingId)
+            return false;
+        if (completed != other.completed)
+            return false;
+        if (customer == null) {
+            if (other.customer != null)
+                return false;
+        } else if (!customer.equals(other.customer))
+            return false;
+        if (customerAddress == null) {
+            if (other.customerAddress != null)
+                return false;
+        } else if (!customerAddress.equals(other.customerAddress))
+            return false;
+        if (deposit == null) {
+            if (other.deposit != null)
+                return false;
+        } else if (!deposit.equals(other.deposit))
+            return false;
+        if (orderSummary == null) {
+            if (other.orderSummary != null)
+                return false;
+        } else if (!orderSummary.equals(other.orderSummary))
+            return false;
+        if (quote == null) {
+            if (other.quote != null)
+                return false;
+        } else if (!quote.equals(other.quote))
+            return false;
+        if (storeCollection != other.storeCollection)
+            return false;
+        return true;
+    }
+
     public void depositPaid() {
         this.deposit.depositPaid();
         
