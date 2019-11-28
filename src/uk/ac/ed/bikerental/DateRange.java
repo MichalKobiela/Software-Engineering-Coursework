@@ -63,6 +63,7 @@ public class DateRange {
      * This means that if two dates do overlap or meet one of the criteria for overlapping, then the
      * function returns true. If it has gone through all of the criteria and not found an overlap then
      * it return false.
+     * JUST EXPLAIN AN OVERVIEW OF THE FUNCTION, input and output
      * 
      * @param other Another DateRange instance to check for overlap
      * @return Boolean A boolean value representing whether or not the dates overlap. True if they do, false if they don't

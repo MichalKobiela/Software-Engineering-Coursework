@@ -95,7 +95,9 @@ public class BikeProvider {
         for(BikeType key : bikes.keySet()) {
             for(Bike bike : bikes.get(key)) {
                 if(bike.getBikeId() == bikeId) {
-                    bike.setInStore(true);
+                    bike.setInStore(true); // if registerBikeReturnToPartner calls this method it call
+                                           // this line but it is OK as we know that delivery person
+                                           // we deliver bike over night
                     return Optional.of(bike);
                 }
             }
@@ -124,7 +126,7 @@ public class BikeProvider {
     private BigDecimal calculateDeposit(ArrayList<Bike> bikesToOffer, DateRange dateRange) {
         BigDecimal result = new BigDecimal(0);
         for(Bike bike : bikesToOffer) {
-            result = result.add(bike.getType().getReplacementValue());
+            result = result.add(valuationPolicy.calculateValue(bike, LocalDate.now()));
         }
         return result.multiply(depositRate);
     }
