@@ -81,7 +81,13 @@ public class BikeRentalSystem {
   
         Booking booking = new Booking(bookingId, quote, customer, storeCollection, customer.getAddress(), orderSummary);
         
-        booking.getQuote().getBikeProvider().addBooking(booking);
+        //Functionality for a payment system is assumed to happen here.
+        //
+        //This is because we need to confirm the payment for the booking first
+        //before we can reserve bikes, set up deliveries, and add the booking
+        //to the bike provider.
+        
+        quote.getBikeProvider().addBooking(booking);
   
         if(!storeCollection) {
             for(Bike bike : quote.getBikes()) {
@@ -89,8 +95,9 @@ public class BikeRentalSystem {
             }
             DeliveryServiceFactory.getDeliveryService().scheduleDelivery(booking.getDeposit(), quote.getBikeProvider().getLocation(), customer.getAddress(), quote.getDateRange().getStart());
         }
-        
+               
         quote.reserveBikes();
+        displayConfirmation(booking);
         return booking;
     }
     

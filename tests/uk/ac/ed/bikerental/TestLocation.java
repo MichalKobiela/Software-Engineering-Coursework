@@ -5,16 +5,26 @@ import org.junit.jupiter.api.*;
 
 class TestLocation {
     
-    private Location location1, location2, location3, location4;
+    private Location location1, location2, location3, location4,
+                     location5, location6;
     
     
     @BeforeEach
     void setUp() throws Exception {
-        // TODO: setup some resources before each test
         this.location1 = new Location("EH85XX", "5/2 Bristo Square");
         this.location2 = new Location("NW19AJ", "Aldenham Street");
         this.location3 = new Location("NW00564", "Upper West Side");
-        this.location4 = new Location("EH165AY", "Pollock Halls");    
+        this.location4 = new Location("EH165AY", "Pollock Halls");  
+        this.location5 = new Location("EH1XAYZ", null);
+        this.location6 = null;
+    }
+    
+    @Test
+    void testNulls() {
+        assertNull(location5.getAddress());
+        assertThrows(NullPointerException.class, () -> location6.getAddress());
+        assertThrows(NullPointerException.class, () -> location6.getPostcode());
+        assertThrows(NullPointerException.class, () -> location6.isNearTo(location1));
     }
     
     @Test
