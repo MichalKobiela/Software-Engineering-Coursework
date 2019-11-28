@@ -330,4 +330,19 @@ public class SystemTests {
         assertTrue(booking.isCompleted());             
     }
     
+    @Test
+    void testMockValuationPolicy() {
+        ValuationPolicyFactory.setupMockValuationPolicyService();
+        
+        provider1.setCustomValuationPolicy(ValuationPolicyFactory.getValuationPolicy());
+        bike1a.reserve(overlappingDateRange);
+        bike2a.reserve(overlappingDateRange);
+        Collection<Quote> quotes = sys.getQuotes(bikeMap1, dateRange, new Location("EH4 789", "Clerk Stret 7"));
+        Iterator<Quote> quotesIterator = quotes.iterator();
+        Quote quote = quotesIterator.next(); //there should be exactly one offer 
+        // mock valuation policy always return one so for three bikes
+        // and deposit rate 0.12 it should be equal to 0.36
+        assertEquals(quote.getDeposit().getValue().compareTo(new BigDecimal("0.36")), 0);
+    }
+    
 }
