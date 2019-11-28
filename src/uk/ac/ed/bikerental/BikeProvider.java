@@ -124,7 +124,7 @@ public class BikeProvider {
     private BigDecimal calculateDeposit(ArrayList<Bike> bikesToOffer, DateRange dateRange) {
         BigDecimal result = new BigDecimal(0);
         for(Bike bike : bikesToOffer) {
-            result = result.add(bike.getType().getReplacementValue());
+            result = result.add(valuationPolicy.calculateValue(bike, LocalDate.now()));
         }
         return result.multiply(depositRate);
     }
@@ -183,9 +183,9 @@ public class BikeProvider {
             System.out.println("Operation unsuccessful. Please set daily price for this type of bike first.");
         }
     }
-    public void addBike(long bikeid, BikeType type) { 
+    public void addBike(long bikeid, BikeType type, LocalDate manufactureDate) { 
         if(dailyRentalPrice.containsKey(type)) {
-            this.addBike(new Bike(bikeid, type));
+            this.addBike(new Bike(bikeid, type, manufactureDate));
         }
         else {
             System.out.println("Operation unsuccessful. Please set daily price for this type of bike first.");
@@ -203,10 +203,10 @@ public class BikeProvider {
     public void addBikeType(String name, BigDecimal replecementValue) { 
         BikeRentalSystem.getInstance().addBikeType(name, replecementValue);
     }
-    public void addBike(long bikeid, String bikeType) { 
+    public void addBike(long bikeid, String bikeType, LocalDate manufactureDate) { 
         Optional<BikeType> typeFromSystem = BikeRentalSystem.getInstance().findBikeType(bikeType);
          if(typeFromSystem.isPresent()) {
-             this.addBike(new Bike(bikeid, typeFromSystem.get())); 
+             this.addBike(new Bike(bikeid, typeFromSystem.get(), manufactureDate)); 
          }
          else {
              System.out.println("This type of bike is not in database. Please add it first using addBikeType()");
