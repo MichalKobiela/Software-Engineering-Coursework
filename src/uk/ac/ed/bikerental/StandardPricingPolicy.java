@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+// We decided to define duration as dateRange.toDays+1
+
 public class StandardPricingPolicy implements PricingPolicy {
 
 

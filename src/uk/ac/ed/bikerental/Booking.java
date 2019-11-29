@@ -1,18 +1,16 @@
 package uk.ac.ed.bikerental;
 
 import java.util.Collection;
-import java.util.Optional;
 
 public class Booking {
     private long bookingId;
     private Quote quote;
     private Customer customer;
-    private boolean storeCollection;
-    private Location customerAddress;
+    private boolean storeCollection; // all operation related of delivery happens in BikeRentalSystem, but good to keep this information
     private String orderSummary;
     private boolean completed;
     private Deposit deposit;
-    
+    Location customerAddress;
        
     public Booking(long bookingId, Quote quote, Customer customer, boolean storeCollection, Location customerAddress,
             String orderSummary) {
@@ -22,9 +20,9 @@ public class Booking {
         this.deposit= quote.getDeposit();
         this.customer = customer;
         this.storeCollection = storeCollection;
-        this.customerAddress = customerAddress;
         this.orderSummary = orderSummary;
         this.completed = false;
+        this.customerAddress = customerAddress;
         
     }
 
@@ -66,15 +64,16 @@ public class Booking {
         return quote;
     }
 
+    public void depositPaid() {
+        this.deposit.depositPaid();
+        
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) (bookingId ^ (bookingId >>> 32));
-        result = prime * result + (completed ? 1231 : 1237);
         result = prime * result + ((customer == null) ? 0 : customer.hashCode());
-        result = prime * result + ((customerAddress == null) ? 0 : customerAddress.hashCode());
-        result = prime * result + ((deposit == null) ? 0 : deposit.hashCode());
         result = prime * result + ((orderSummary == null) ? 0 : orderSummary.hashCode());
         result = prime * result + ((quote == null) ? 0 : quote.hashCode());
         result = prime * result + (storeCollection ? 1231 : 1237);
@@ -90,24 +89,10 @@ public class Booking {
         if (getClass() != obj.getClass())
             return false;
         Booking other = (Booking) obj;
-        if (bookingId != other.bookingId)
-            return false;
-        if (completed != other.completed)
-            return false;
         if (customer == null) {
             if (other.customer != null)
                 return false;
         } else if (!customer.equals(other.customer))
-            return false;
-        if (customerAddress == null) {
-            if (other.customerAddress != null)
-                return false;
-        } else if (!customerAddress.equals(other.customerAddress))
-            return false;
-        if (deposit == null) {
-            if (other.deposit != null)
-                return false;
-        } else if (!deposit.equals(other.deposit))
             return false;
         if (orderSummary == null) {
             if (other.orderSummary != null)
@@ -124,17 +109,12 @@ public class Booking {
         return true;
     }
 
-    public void depositPaid() {
-        this.deposit.depositPaid();
-        
-    }
-
     public void bikesGivenToCustomer() {
         Collection<Bike> bikes = quote.getBikes();  
         for (Bike bike : bikes) {
-            Collection<DateRange> datesReserved = bike.getDatesReserved();
             bike.setInStore(false);      
         }      
     }
+    
    
 }

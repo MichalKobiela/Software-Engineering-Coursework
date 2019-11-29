@@ -2,6 +2,8 @@ package uk.ac.ed.bikerental;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Quote {
     private BikeProvider bikeProvider;
@@ -66,15 +68,16 @@ public class Quote {
         return totalPrice;
     }
     
+
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((bikeProvider == null) ? 0 : bikeProvider.hashCode());
-        result = prime * result + ((bikes == null) ? 0 : bikes.hashCode());
         result = prime * result + ((dateRange == null) ? 0 : dateRange.hashCode());
-        result = prime * result + ((deposit == null) ? 0 : deposit.hashCode());
-        result = prime * result + ((totalPrice == null) ? 0 : totalPrice.hashCode());
+        result = prime * result + ((totalPrice == null) ? 0 : totalPrice.unscaledValue().shortValue());
         return result;
     }
 
@@ -90,35 +93,41 @@ public class Quote {
         if (bikeProvider == null) {
             if (other.bikeProvider != null)
                 return false;
-        } else if (!(bikeProvider==other.bikeProvider))
-            return false;
-        if (bikes == null) {
-            if (other.bikes != null)
-                return false;
-        } else if (!bikes.equals(other.bikes))
+        } else if (!bikeProvider.equals(other.bikeProvider))
             return false;
         if (dateRange == null) {
             if (other.dateRange != null)
                 return false;
         } else if (!dateRange.equals(other.dateRange))
             return false;
-        if (deposit == null) {
-            if (other.deposit != null)
-                return false;
-        } else if (!deposit.equals(other.deposit))
-            return false;
         if (totalPrice == null) {
             if (other.totalPrice != null)
                 return false;
-        } else if (!totalPrice.equals(other.totalPrice))
+        } else if (totalPrice.compareTo(other.totalPrice) != 0)
             return false;
+        if(!this.bikeQuantities().equals(other.bikeQuantities())) { 
+            return false;
+        }
+        if(this.getDeposit().getValue().compareTo(other.getDeposit().getValue()) != 0) { 
+            return false;
+        }
         return true;
+    }
+
+    private Map<BikeType, Integer> bikeQuantities() {
+        HashMap<BikeType, Integer> result = new HashMap<BikeType, Integer>();
+        for(Bike bike : bikes) {
+            if(result.keySet().contains(bike.getType())) {
+                result.put(bike.getType(), result.get(bike.getType())+1);
+            }
+            else {
+                result.put(bike.getType(), 1);
+                }
+        }
+        return result;
     }
 
     public Deposit getDeposit() {
         return deposit;
     }
-    
-    
-    
 }

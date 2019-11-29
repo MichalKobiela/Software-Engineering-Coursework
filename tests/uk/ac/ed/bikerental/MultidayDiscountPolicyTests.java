@@ -17,22 +17,22 @@ public class MultidayDiscountPolicyTests {
     private Bike bike1, bike2, bike3, bike4, bike5;
     private MultidayDiscountsPolicy policy1, policy2;
     private Collection<Bike> bikes;
-    private LocalDate manfuacturedate;
+    private LocalDate manufactureDate;
     @BeforeEach
     void setUp() throws Exception {
         this.high = new BigDecimal(1500);
         this.medium = new BigDecimal(300);
         this.low = new BigDecimal("50.12");
-        this.manfuacturedate= LocalDate.of(2010, 11, 1);
+        this.manufactureDate= LocalDate.of(2010, 11, 1);
         
         type1 = new BikeType("type1",high);
         type2 = new BikeType("type1",medium);
         type3 = new BikeType("type1",low);
-        bike1 = new Bike(1,type1, manfuacturedate);
-        bike2 = new Bike(2,type1, manfuacturedate );
-        bike3 = new Bike(3,type2, manfuacturedate);
-        bike4 = new Bike(4,type1, manfuacturedate);
-        bike5 = new Bike(5,type3, manfuacturedate);
+        bike1 = new Bike(1,type1, manufactureDate);
+        bike2 = new Bike(2,type1, manufactureDate );
+        bike3 = new Bike(3,type2, manufactureDate);
+        bike4 = new Bike(4,type1, manufactureDate);
+        bike5 = new Bike(5,type3, manufactureDate);
         bikes = new HashSet<Bike>();
         bikes.add(bike1);
         bikes.add(bike2);
@@ -46,7 +46,7 @@ public class MultidayDiscountPolicyTests {
          * 5+  days 10%
          * 
          */
-
+        
         policy1 = new MultidayDiscountsPolicy();
         policy1.setDiscount(3, "0.05");
         policy1.setDiscount(5, "0.1");
@@ -70,7 +70,12 @@ public class MultidayDiscountPolicyTests {
         policy2.setDailyRentalPrice(type3, low);
     }
     
-    //policy1
+    /* policy1
+     *
+     * testing strategy: partition number of days 0, [1,2], [3,4], 5+
+     * Exhaustive coverage of partitions.
+     */
+    
     @Test
     void test1() {
         // 4 days
@@ -113,19 +118,13 @@ public class MultidayDiscountPolicyTests {
         // overall 26190.648
         assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("26190.648")),0);
     }
+    
+    /*policy 2
+    * policy2Test 1 & 2 checks if implementation support if discounts are not growing with number of days 
+    */
+    
     @Test
-    void test5() {
-        // 6 days after reseting discounts
-        LocalDate date1 = LocalDate.of(2019, 11, 1);
-        LocalDate date2 = LocalDate.of(2019, 11, 6);
-        DateRange dateRange = new DateRange(date1, date2);
-        policy1.resetDiscounts();
-        // should be (3*1500+300+50.12)*1 = 4850.12 a day
-        // overall 29100.72
-        assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("29100.72")),0);
-    }
-    @Test
-    void test6() {
+    void policy2Test1() {
         // 11 days with policy2
         LocalDate date1 = LocalDate.of(2019, 11, 1);
         LocalDate date2 = LocalDate.of(2019, 11, 11);
@@ -135,7 +134,7 @@ public class MultidayDiscountPolicyTests {
         assertEquals(policy2.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("47482.6748")),0);
     }
     @Test
-    void test7() {
+    void policy2Test2() {
         // 9 days with policy2
         LocalDate date1 = LocalDate.of(2019, 11, 2);
         LocalDate date2 = LocalDate.of(2019, 11, 10);
@@ -144,5 +143,19 @@ public class MultidayDiscountPolicyTests {
         // overall 42778.0584;
         assertEquals(policy2.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("42778.0584")),0);
     }
+    
+    //test support of reseting (all previous test were develop before implementation, this is glass box)
+    @Test
+    void resetTest() {
+        // 6 days after reseting discounts
+        LocalDate date1 = LocalDate.of(2019, 11, 1);
+        LocalDate date2 = LocalDate.of(2019, 11, 6);
+        DateRange dateRange = new DateRange(date1, date2);
+        policy1.resetDiscounts();
+        // should be (3*1500+300+50.12)*1 = 4850.12 a day
+        // overall 29100.72
+        assertEquals(policy1.calculatePrice(bikes, dateRange).compareTo(new BigDecimal("29100.72")),0);
+    }
+    
     
 }

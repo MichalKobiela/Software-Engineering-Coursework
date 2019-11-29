@@ -6,7 +6,7 @@ public class Customer {
     private Location address;
     private String phoneNumber;
     private String email;
-    private String password;
+    private String password; // we have not implemented any password validation
     
     public Customer(String firstName, String lastName, String address, String postCode, String phoneNumber,
             String email, String password) {
@@ -56,7 +56,7 @@ public class Customer {
         this.email = email;
     }
 
-    private void setPassword(String password) {
+    public  void setPassword(String password) {
         this.password = password;
     }
     

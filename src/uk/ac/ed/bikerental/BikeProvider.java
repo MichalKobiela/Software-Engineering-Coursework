@@ -14,7 +14,7 @@ import java.util.Optional;
 public class BikeProvider {
     private String name;
     private Location shopAddress;
-    private String phoneNumber; 
+    private String phoneNumber;
     private TimeRange openingHours;
     private Map<BikeType, BigDecimal> dailyRentalPrice;
     private BigDecimal depositRate;
@@ -95,15 +95,64 @@ public class BikeProvider {
         for(BikeType key : bikes.keySet()) {
             for(Bike bike : bikes.get(key)) {
                 if(bike.getBikeId() == bikeId) {
-                    bike.setInStore(true); // if registerBikeReturnToPartner calls this method it call
-                                           // this line but it is OK as we know that delivery person
-                                           // we deliver bike over night
+                    /* if registerBikeReturnToPartner calls this method it call
+                     * this line but it is OK as we know that delivery person
+                     * we deliver bike over night
+                     */
+                    bike.setInStore(true); 
                     return Optional.of(bike);
                 }
             }
         }
         return Optional.empty();
     }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((openingHours == null) ? 0 : openingHours.hashCode());
+        result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+        result = prime * result + ((shopAddress == null) ? 0 : shopAddress.hashCode());
+        return result;
+    }
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        BikeProvider other = (BikeProvider) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (openingHours == null) {
+            if (other.openingHours != null)
+                return false;
+        } else if (!openingHours.equals(other.openingHours))
+            return false;
+        if (phoneNumber == null) {
+            if (other.phoneNumber != null)
+                return false;
+        } else if (!phoneNumber.equals(other.phoneNumber))
+            return false;
+        if (shopAddress == null) {
+            if (other.shopAddress != null)
+                return false;
+        } else if (!shopAddress.equals(other.shopAddress))
+            return false;
+        return true;
+    }
+
+
+
     public Optional<Quote> getQuote(Map<BikeType, Integer> bikeMap, DateRange dateRange){
         assert !bikeMap.keySet().isEmpty();
         ArrayList<Bike> bikesToOffer = new ArrayList<Bike>();
@@ -173,7 +222,7 @@ public class BikeProvider {
             }
         }
     }
-    public void addBike(Bike bike) { 
+    public void addBike(Bike bike) throws IllegalArgumentException { 
         BikeType type = bike.getType();
         if(dailyRentalPrice.containsKey(bike.getType())) {
             if(!bikes.keySet().contains(type)) {
@@ -182,36 +231,38 @@ public class BikeProvider {
             bikes.get(type).add(bike);
             }
         else {
-            System.out.println("Operation unsuccessful. Please set daily price for this type of bike first.");
+            throw new IllegalArgumentException("Set daily price for this type of bike first.");
         }
     }
-    public void addBike(long bikeid, BikeType type, LocalDate manufactureDate) { 
+    public void addBike(long bikeid, BikeType type, LocalDate manufactureDate) throws IllegalArgumentException { 
         if(dailyRentalPrice.containsKey(type)) {
             this.addBike(new Bike(bikeid, type, manufactureDate));
         }
         else {
-            System.out.println("Operation unsuccessful. Please set daily price for this type of bike first.");
+            throw new IllegalArgumentException("Set daily price for this type of bike first.");
         }
     }
-    public void setDailyRentalPrice(BikeType bikeType, BigDecimal dailyPrice) {
+    public void setDailyRentalPrice(BikeType bikeType, BigDecimal dailyPrice) throws IllegalArgumentException  {
         if(BikeRentalSystem.getInstance().containsType(bikeType)) {
             dailyRentalPrice.put(bikeType, dailyPrice);
             pricingPolicy.setDailyRentalPrice(bikeType, dailyPrice);
         }
         else {
-            System.out.println("Operation unsuccessful. Please add bike type to the system first.");
+            throw new IllegalArgumentException("BikeType not recognized. Please add bike type to the system first.");
         }
     }
     public void addBikeType(String name, BigDecimal replecementValue) { 
         BikeRentalSystem.getInstance().addBikeType(name, replecementValue);
     }
-    public void addBike(long bikeid, String bikeType, LocalDate manufactureDate) { 
+    
+    public void addBike(long bikeid, String bikeType, LocalDate manufactureDate) throws IllegalArgumentException { 
         Optional<BikeType> typeFromSystem = BikeRentalSystem.getInstance().findBikeType(bikeType);
          if(typeFromSystem.isPresent()) {
              this.addBike(new Bike(bikeid, typeFromSystem.get(), manufactureDate)); 
          }
          else {
-             System.out.println("This type of bike is not in database. Please add it first using addBikeType()");
+             throw new IllegalArgumentException("This type of bike is not in database."
+                     + " Please add it first using addBikeType()");
          }
     }
 
