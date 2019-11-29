@@ -7,7 +7,7 @@ public class Customer {
     private String phoneNumber;
     private String email;
     private String password; // we have not implemented any password validation
-    
+
     public Customer(String firstName, String lastName, String address, String postCode, String phoneNumber,
             String email, String password) {
         super();
@@ -56,11 +56,8 @@ public class Customer {
         this.email = email;
     }
 
-    public  void setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
-    
-    
-    
-    
+
 }

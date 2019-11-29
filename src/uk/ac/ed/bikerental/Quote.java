@@ -11,7 +11,7 @@ public class Quote {
     private BigDecimal totalPrice;
     private Deposit deposit;
     private Collection<Bike> bikes;
-    
+
     public Quote(BikeProvider bikeProvider, DateRange dateRange, BigDecimal totalPrice, BigDecimal deposit,
             Collection<Bike> bikes) {
         this.bikeProvider = bikeProvider;
@@ -22,24 +22,23 @@ public class Quote {
     }
 
     public boolean reserveBikes() {
-        if (isEmpty()) { 
+        if (isEmpty()) {
             return false;
-        }
-        else {
-            for(Bike bike: bikes) {
+        } else {
+            for (Bike bike : bikes) {
                 bike.reserve(dateRange);
-           }
-           return true;
+            }
+            return true;
         }
 
     }
-    
+
     public boolean isEmpty() {
         return bikes.isEmpty();
     }
-    
+
     public void registerReturnOfBikes() {
-        for (Bike bike: bikes) {
+        for (Bike bike : bikes) {
             bike.setInStore(true);
         }
     }
@@ -59,17 +58,14 @@ public class Quote {
     public void setBikes(Collection<Bike> bikes) {
         this.bikes = bikes;
     }
-    
+
     public BikeProvider getBikeProvider() {
         return bikeProvider;
     }
-    
+
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
-    
-
-
 
     @Override
     public int hashCode() {
@@ -105,10 +101,10 @@ public class Quote {
                 return false;
         } else if (totalPrice.compareTo(other.totalPrice) != 0)
             return false;
-        if(!this.bikeQuantities().equals(other.bikeQuantities())) { 
+        if (!this.bikeQuantities().equals(other.bikeQuantities())) {
             return false;
         }
-        if(this.getDeposit().getValue().compareTo(other.getDeposit().getValue()) != 0) { 
+        if (this.getDeposit().getValue().compareTo(other.getDeposit().getValue()) != 0) {
             return false;
         }
         return true;
@@ -116,13 +112,12 @@ public class Quote {
 
     private Map<BikeType, Integer> bikeQuantities() {
         HashMap<BikeType, Integer> result = new HashMap<BikeType, Integer>();
-        for(Bike bike : bikes) {
-            if(result.keySet().contains(bike.getType())) {
-                result.put(bike.getType(), result.get(bike.getType())+1);
-            }
-            else {
+        for (Bike bike : bikes) {
+            if (result.keySet().contains(bike.getType())) {
+                result.put(bike.getType(), result.get(bike.getType()) + 1);
+            } else {
                 result.put(bike.getType(), 1);
-                }
+            }
         }
         return result;
     }

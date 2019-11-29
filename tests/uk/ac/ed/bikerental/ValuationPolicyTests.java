@@ -10,6 +10,6 @@ public class ValuationPolicyTests {
     void setUp() throws Exception {
         // Put setup here
     }
-    
+
     // TODO: Write tests for valuation policies
 }

@@ -5,7 +5,7 @@ public class TimeRange {
     int OpeningMinute;
     int ClosingHour;
     int ClosingMinute;
-    
+
     public TimeRange(int openingHour, int openingMinute, int closingHour, int closingMinute) {
         super();
         OpeningHour = openingHour;
@@ -13,5 +13,5 @@ public class TimeRange {
         ClosingHour = closingHour;
         ClosingMinute = closingMinute;
     }
-    
+
 }

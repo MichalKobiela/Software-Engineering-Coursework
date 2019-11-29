@@ -5,8 +5,7 @@ import java.math.BigDecimal;
 public class BikeType {
     private String name;
     private BigDecimal replecementValue;
-    
-    
+
     public BikeType(String name, BigDecimal replecementValue) {
         assert !name.isEmpty();
         this.name = name;
@@ -29,5 +28,5 @@ public class BikeType {
     public void setReplecementValue(BigDecimal replecementValue) {
         this.replecementValue = replecementValue;
     }
-    
+
 }

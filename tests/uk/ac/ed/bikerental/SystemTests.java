@@ -29,7 +29,7 @@ public class SystemTests {
         // Setup mock delivery service before each tests
         DeliveryServiceFactory.setupMockDeliveryService();
 
-        // Put your test setup here
+        // Setup
         BikeRentalSystem.resetForTest();
         sys = BikeRentalSystem.getInstance();
         provider1 = new BikeProvider("Provider1", "EH1 2EQ", "High Street 75", "07789654", new TimeRange(9, 0, 16, 0),
@@ -38,17 +38,29 @@ public class SystemTests {
                 new BigDecimal("0.15"));
         provider3 = new BikeProvider("Provider3", "G1 7NB", "Narrow Street 75", "07189657", new TimeRange(9, 0, 17, 30),
                 new BigDecimal("0.4"));
+
+        /*
+         * BikeTypes and replacement value:
+         * type1 1500
+         * type2 300
+         * type3 50.12
+         */
+
         high = new BigDecimal(1500);
         medium = new BigDecimal(300);
         low = new BigDecimal("50.12");
-
-        /*
-         * provider1: type1 : 4 bikes type2 : 2 bikes type3 : 4 bikes
-         */
-
         type1 = new BikeType("type1", high);
         type2 = new BikeType("type2", medium);
         type3 = new BikeType("type3", low);
+
+        /*
+         * provider1:
+         * type1 (daily price: 10) : 4 bikes,
+         * type2 (daily price: 20) : 2 bikes,
+         * type3 (daily price: 25.5) : 4 bikes,
+         * deposit rate 0.12
+         */
+
         bike1 = new Bike(1, type1, manufacturedate);
         bike2 = new Bike(2, type1, manufacturedate);
         bike3 = new Bike(3, type1, manufacturedate);
@@ -74,7 +86,11 @@ public class SystemTests {
         provider1.addBike(bike10);
 
         /*
-         * provider2: type1 : 3 bikes type2 : 1 bikes type3 : 0 bikes
+         * provider2:
+         * type1 (daily price: 15) : 3 bikes,
+         * type2 (daily price: 25) : 1 bikes,
+         * type3 (daily price: 30.5) : 0 bikes,
+         * deposit rate 0.15
          */
 
         bike1a = new Bike(1, type1, manufacturedate);
@@ -91,7 +107,10 @@ public class SystemTests {
         provider2.addBike(bike4a);
 
         /*
-         * provider3: type1 : 1 bikes type2 : 0 bikes type3 : 0 bikes
+         * provider3: type1 (daily price: 5) : 1 bikes,
+         * type2 (daily price: 12) : 0 bikes,
+         * type3 (daily price: 32.5) : 0 bikes, 
+         * deposit rate 0.4
          */
 
         bike1b = new Bike(1, type1, manufacturedate);
@@ -101,8 +120,10 @@ public class SystemTests {
         provider3.addBike(bike1b);
 
         /*
-         * bikeMap1: type1 : 2 bikes type2 : 1 bikes without any reservations both
-         * provider1 and provider2 should be able to offer bikes
+         * bikeMap1: type1 : 2 bikes,
+         * type2 : 1 bikes, 
+         * without any reservations both provider1 
+         * and provider2 should be able to offer bikes for this Map
          */
 
         bikeMap1 = new HashMap<BikeType, Integer>();
@@ -126,8 +147,8 @@ public class SystemTests {
         bikes1.add(bike1);
         bikes1.add(bike2);
         bikes1.add(bike6);
-        // deposit should be equal to (2*1500+300)*0.12=396
-
+        // deposit should be equal to (2*1500+300)*0.12=396, final price should be 40*5
+        // = 200
         quote1 = new Quote(provider1, dateRange, new BigDecimal("200"), new BigDecimal("396"), bikes1);
 
         // quote2 - potential offer from provider2 for bikeMap1
@@ -135,21 +156,21 @@ public class SystemTests {
         bikes2.add(bike1a);
         bikes2.add(bike2a);
         bikes2.add(bike4a);
+        // deposit should be equal to (2*1500+300)*0.15=495, final price should be
+        // (2*15+25)*5 = 200
         quote2 = new Quote(provider2, dateRange, new BigDecimal("275"), new BigDecimal("495"), bikes2);
 
     }
 
     /*
      * Testing strategy: tests are getting more and more complex and involving more
-     * use cases to see exactly where system fails
+     * use cases to see at which point system fails
      */
 
     @Test
     void getQuotetest1() {
-
         // provider one and two can offer a quote for bikeMap1, so size of returned
         // collection must be 2;
-
         Collection<Quote> getQuoteResult = sys.getQuotes(bikeMap1, dateRange, new Location("EH4 789", "Clerk Stret 7"));
         assertEquals(getQuoteResult.size(), 2);
         assertTrue(getQuoteResult.contains(quote1));
@@ -160,6 +181,11 @@ public class SystemTests {
          * agree
          */
         assertTrue(getQuoteResult.contains(quote2));
+        // wrong quote should not be in getQuoteResult
+        HashSet<Bike> bikes3 = new HashSet<Bike>();
+        bikes3.add(bike2);
+        Quote wrongQuote = new Quote(provider2, dateRange, new BigDecimal("275"), new BigDecimal("495"), bikes3);
+        assertFalse(getQuoteResult.contains(wrongQuote));
 
     }
 
@@ -168,11 +194,12 @@ public class SystemTests {
 
         bike1a.reserve(overlappingDateRange);
         bike2a.reserve(overlappingDateRange);
-        // provider 2 now cannot offer a quote because bikes are reserved so the size
-        // will be 1
+        /*
+         * provider 2 now cannot offer a quote because bikes are reserved
+         * so the size will be 1
+         */
         Collection<Quote> getQuoteResult = sys.getQuotes(bikeMap1, dateRange, new Location("EH4 789", "Clerk Stret 7"));
         assertEquals(getQuoteResult.size(), 1);
-
         assertTrue(getQuoteResult.contains(quote1));
         assertFalse(getQuoteResult.contains(quote2));
 
@@ -245,11 +272,13 @@ public class SystemTests {
         Collection<Quote> quotes = sys.getQuotes(bikeMap1, dateRange, new Location("EH4 789", "Clerk Stret 7"));
         Iterator<Quote> quotesIterator = quotes.iterator();
         Quote quote = quotesIterator.next(); // there should be exactly one offer
-        Customer customer = new Customer("Tom", "Tomson", "Clerk Stret 7", "EH4 789", "079456412", "email@abc.co.uk", "password");
-        Booking booking = sys.bookQuote(quote,                customer, true);
-        Booking bookingTest = new Booking(1, quote, customer, true, customer.getAddress(), "Order Summary:\nCustomer:"
-                + " Tom Tomson\nBooking ID: 1\nDate Range: 2019-11-01 to 2019-11-05\nBike Provider: Provider1\n"
-                + "Total Price: 200\nDeposit: uk.ac.ed.bikerental.Deposit@265db3e\nIn Store Collection: true");
+        Customer customer = new Customer("Tom", "Tomson", "Clerk Stret 7", "EH4 789", "079456412", "email@abc.co.uk",
+                "password");
+        Booking booking = sys.bookQuote(quote, customer, true);
+        Booking bookingTest = new Booking(1, quote, customer, true, customer.getAddress(),
+                "Order Summary:\nCustomer:"
+                        + " Tom Tomson\nBooking ID: 1\nDate Range: 2019-11-01 to 2019-11-05\nBike Provider: Provider1\n"
+                        + "Total Price: 200\nDeposit: uk.ac.ed.bikerental.Deposit@265db3e\nIn Store Collection: true");
         assertTrue(booking.equals(bookingTest));
         // test if deposit is unpaid on default
         booking.depositPaid(); // provider gives bikes to customer and updates booking
@@ -385,8 +414,10 @@ public class SystemTests {
         Collection<Quote> quotes = sys.getQuotes(bikeMap1, dateRange, new Location("EH4 789", "Clerk Stret 7"));
         Iterator<Quote> quotesIterator = quotes.iterator();
         Quote quote = quotesIterator.next(); // there should be exactly one offer
-        // mock valuation policy always return one so for three bikes
-        // and deposit rate 0.12 it should be equal to 0.36
+        /*
+         * mock valuation policy always return one so for three bikes and deposit rate
+         * 0.12 it should be equal to 0.36
+         */
         assertEquals(quote.getDeposit().getValue().compareTo(new BigDecimal("0.36")), 0);
     }
 

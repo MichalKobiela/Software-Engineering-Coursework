@@ -8,8 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TestDateRange {
-    private DateRange dateRange1, dateRange2, dateRange3, dateRange4, dateRange5, dateRange6,
-                      dateRange7, dateRange8;
+    private DateRange dateRange1, dateRange2, dateRange3, dateRange4, dateRange5, dateRange6, dateRange7, dateRange8;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -24,46 +23,16 @@ class TestDateRange {
         this.dateRange8 = null;
 
     }
-    
-    @Test
-    void testNullDateRange() {
-        assertThrows(NullPointerException.class, () -> dateRange7.toDays());
-        assertThrows(NullPointerException.class, () -> dateRange8.toDays());
-        assertThrows(NullPointerException.class, () -> dateRange7.toYears());
-        assertThrows(NullPointerException.class, () -> dateRange8.toYears());
-        assertThrows(NullPointerException.class, () -> dateRange7.overlaps(dateRange8));
-        assertThrows(NullPointerException.class, () -> dateRange8.overlaps(dateRange7));
-    }
-    
+
     // Sample JUnit tests checking toYears works
     @Test
     void testToYears1() {
         assertEquals(0, this.dateRange1.toYears());
     }
-    
+
     @Test
     void testToYears3() {
         assertEquals(3, this.dateRange3.toYears());
-    }
-    
-    @Test
-    void testNotNullToDays() {
-        assertNotNull(this.dateRange1.toDays());
-        assertNotNull(this.dateRange2.toDays());
-        assertNotNull(this.dateRange3.toDays());
-        assertNotNull(this.dateRange4.toDays());
-        assertNotNull(this.dateRange5.toDays());
-        assertNotNull(this.dateRange6.toDays());
-    }
-    
-    @Test
-    void testNotNullToYears() {
-        assertNotNull(this.dateRange1.toYears());
-        assertNotNull(this.dateRange2.toYears());
-        assertNotNull(this.dateRange3.toYears());
-        assertNotNull(this.dateRange4.toYears());
-        assertNotNull(this.dateRange5.toYears());
-        assertNotNull(this.dateRange6.toYears());
     }
 
     @Test
@@ -94,12 +63,42 @@ class TestDateRange {
         assertEquals(false, this.dateRange5.overlaps(dateRange3));
         assertEquals(false, this.dateRange5.overlaps(dateRange4));
     }
-    
+
     @Test
     void testEdgeCases() {
         assertEquals(true, this.dateRange1.overlaps(dateRange1));
         assertEquals(true, this.dateRange5.overlaps(dateRange6));
         assertEquals(true, this.dateRange6.overlaps(dateRange5));
+    }
+
+    @Test
+    void testNullDateRange() {
+        assertThrows(NullPointerException.class, () -> dateRange7.toDays());
+        assertThrows(NullPointerException.class, () -> dateRange8.toDays());
+        assertThrows(NullPointerException.class, () -> dateRange7.toYears());
+        assertThrows(NullPointerException.class, () -> dateRange8.toYears());
+        assertThrows(NullPointerException.class, () -> dateRange7.overlaps(dateRange8));
+        assertThrows(NullPointerException.class, () -> dateRange8.overlaps(dateRange7));
+    }
+
+    @Test
+    void testNotNullToDays() {
+        assertNotNull(this.dateRange1.toDays());
+        assertNotNull(this.dateRange2.toDays());
+        assertNotNull(this.dateRange3.toDays());
+        assertNotNull(this.dateRange4.toDays());
+        assertNotNull(this.dateRange5.toDays());
+        assertNotNull(this.dateRange6.toDays());
+    }
+
+    @Test
+    void testNotNullToYears() {
+        assertNotNull(this.dateRange1.toYears());
+        assertNotNull(this.dateRange2.toYears());
+        assertNotNull(this.dateRange3.toYears());
+        assertNotNull(this.dateRange4.toYears());
+        assertNotNull(this.dateRange5.toYears());
+        assertNotNull(this.dateRange6.toYears());
     }
 
     @Test
@@ -113,8 +112,7 @@ class TestDateRange {
         assertEquals(18, this.dateRange2.toDays());
         assertEquals(1099, this.dateRange3.toDays());
         assertEquals(455459, this.dateRange4.toDays());
-        //I used an online date range calculator for the longer days
+        // I used an online date range calculator for the longer days
     }
-    
 
 }

@@ -31,6 +31,7 @@ public class Deposit implements Deliverable {
         this.paid = depositPaid;
         this.returned = depositReturned;
     }
+
     public Deposit(String value, boolean depositPaid, boolean depositReturned) {
         super();
         this.value = new BigDecimal(value);
@@ -38,6 +39,7 @@ public class Deposit implements Deliverable {
         this.paid = depositPaid;
         this.returned = depositReturned;
     }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -72,8 +74,10 @@ public class Deposit implements Deliverable {
         return true;
     }
 
-    // When bike provider use delivery system to deliver deposit to customer it means that delivery will collect deposit from customer on drop off.
-    // and then it is assumed that delivery will transfer money to bike provider outside the system.
+    // When bike provider use delivery system to deliver deposit to customer it
+    // means that delivery will collect deposit from customer on drop off.
+    // and then it is assumed that delivery will transfer money to bike provider
+    // outside the system.
     @Override
     public void onPickup() {
         isBeingDelivered = true;
@@ -83,18 +87,18 @@ public class Deposit implements Deliverable {
     @Override
     public void onDropoff() {
         isBeingDelivered = false;
-        paid=true;
+        paid = true;
 
     }
 
     public void depositReturn() {
         returned = true;
-        
+
     }
-    
+
     public void depositPaid() {
         paid = true;
-        
+
     }
 
 }

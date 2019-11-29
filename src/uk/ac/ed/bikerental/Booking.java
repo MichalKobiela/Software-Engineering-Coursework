@@ -6,24 +6,25 @@ public class Booking {
     private long bookingId;
     private Quote quote;
     private Customer customer;
-    private boolean storeCollection; // all operation related of delivery happens in BikeRentalSystem, but good to keep this information
+    private boolean storeCollection; // all operation related of delivery happens in BikeRentalSystem, but good to
+                                     // keep this information
     private String orderSummary;
     private boolean completed;
     private Deposit deposit;
     Location customerAddress;
-       
+
     public Booking(long bookingId, Quote quote, Customer customer, boolean storeCollection, Location customerAddress,
             String orderSummary) {
         super();
         this.bookingId = bookingId;
         this.quote = quote;
-        this.deposit= quote.getDeposit();
+        this.deposit = quote.getDeposit();
         this.customer = customer;
         this.storeCollection = storeCollection;
         this.orderSummary = orderSummary;
         this.completed = false;
         this.customerAddress = customerAddress;
-        
+
     }
 
     public Deposit getDeposit() {
@@ -33,40 +34,42 @@ public class Booking {
     public void registerDepositReturn() {
         deposit.depositReturn();
     }
-    
+
     public void makeCompleted() {
-        completed = true; 
+        completed = true;
     }
-    
+
     public boolean isCompleted() {
         return completed;
     }
 
     public String toString() {
         String stringOut = "";
-        
-        stringOut += "BookingId: " + bookingId + "\nCustomer Name: " + customer.getFirstName() + " " + customer.getLastName() + "\n";
+
+        stringOut += "BookingId: " + bookingId + "\nCustomer Name: " + customer.getFirstName() + " "
+                + customer.getLastName() + "\n";
         stringOut += "Order Summary: " + orderSummary + "\n";
-        //stringOut += "Completed: " + completed;       
-        
+        // stringOut += "Completed: " + completed;
+
         return stringOut;
     }
-    
+
     public long getBookingId() {
         return bookingId;
     }
 
     public void sendConfirmation() {
-        //TODO supposed to send some confirmation but given that we don't have anything to send the confirmation to we have left it empty
+        // TODO supposed to send some confirmation but given that we don't have anything
+        // to send the confirmation to we have left it empty
     }
-    
+
     public Quote getQuote() {
         return quote;
     }
 
     public void depositPaid() {
         this.deposit.depositPaid();
-        
+
     }
 
     @Override
@@ -110,11 +113,10 @@ public class Booking {
     }
 
     public void bikesGivenToCustomer() {
-        Collection<Bike> bikes = quote.getBikes();  
+        Collection<Bike> bikes = quote.getBikes();
         for (Bike bike : bikes) {
-            bike.setInStore(false);      
-        }      
+            bike.setInStore(false);
+        }
     }
-    
-   
+
 }
